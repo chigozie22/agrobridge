@@ -3,7 +3,7 @@ services:
     name: agrobridge-backend
     runtime: python
     plan: free
-    buildCommand: pip install -r backend/requirements.txt && cd backend && python manage.py collectstatic --no-input
+    buildCommand: cd backend && pip install -r requirements.txt && python manage.py collectstatic --no-input && python manage.py migrate
     startCommand: cd backend && gunicorn config.wsgi:application --bind 0.0.0.0:$PORT
     envVars:
       - key: PYTHON_VERSION
