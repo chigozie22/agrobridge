@@ -3,7 +3,6 @@ from apps.vendors.models import Vendor, VendorPrice
 from apps.products.models import Product, Category
 import random
 
-from backend.apps.clusters.models import Cluster
 
 class Command(BaseCommand):
     help = 'Seed products and vendors'
@@ -55,7 +54,7 @@ class Command(BaseCommand):
             )
     
         self.stdout.write(f'Created {Cluster.objects.count()} clusters')
-        
+
         # Create categories
         cats = {
             'Vegetables': Category.objects.get_or_create(name='Vegetables')[0],

@@ -30,6 +30,7 @@ export default function SignupPage() {
     try {
       const response = await fetch(`${API_URL}/api/clusters/`)
       const data = await response.json()
+      console.log('Fetched clusters:', data)
       setClusters(data.results || data)
     } catch (err) {
       console.error('Failed to fetch clusters:', err)
