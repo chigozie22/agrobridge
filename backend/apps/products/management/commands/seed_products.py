@@ -3,11 +3,58 @@ from apps.vendors.models import Vendor, VendorPrice
 from apps.products.models import Product, Category
 import random
 
+from backend.apps.clusters.models import Cluster
+
 class Command(BaseCommand):
     help = 'Seed products and vendors'
 
     def handle(self, *args, **kwargs):
         self.stdout.write('Seeding data...')
+        
+        # Import Cluster model
+        from apps.clusters.models import Cluster
+
+        # Create clusters FIRST
+        clusters_data = [
+        {
+            'name': 'Ikeja Cluster',
+            'location': 'Ikeja, Lagos',
+            'description': 'Serving Ikeja and surrounding areas',
+            'status': 'ACTIVE',
+            'min_order_value': 5000,
+            'delivery_fee': 500,
+            'admin_name': 'Admin User',
+            'admin_phone': '08011111111',
+        },
+        {
+            'name': 'Lekki Cluster',
+            'location': 'Lekki Phase 1, Lagos',
+            'description': 'Serving Lekki Peninsula',
+            'status': 'ACTIVE',
+            'min_order_value': 7000,
+            'delivery_fee': 800,
+            'admin_name': 'Admin User',
+            'admin_phone': '08022222222',
+        },
+        {
+            'name': 'Surulere Cluster',
+            'location': 'Surulere, Lagos',
+            'description': 'Serving Surulere and environs',
+            'status': 'ACTIVE',
+            'min_order_value': 5000,
+            'delivery_fee': 500,
+            'admin_name': 'Admin User',
+            'admin_phone': '08033333333',
+        },
+    ]
+    
+        for cluster_data in clusters_data:
+            Cluster.objects.get_or_create(
+                name=cluster_data['name'],
+                defaults=cluster_data
+            )
+    
+        self.stdout.write(f'Created {Cluster.objects.count()} clusters')
         
         # Create categories
         cats = {
