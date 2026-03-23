@@ -90,3 +90,145 @@ class Product(models.Model):
             is_available=True
         ).order_by('price').first()
         return cheapest.price if cheapest else None
+
+
+class Combo(models.Model):
+    """
+    Pre-packaged food bundles with multiple items
+    """
+    USE_CASE_CHOICES = [
+        ('students', 'Students'),
+        ('families', 'Families'),
+        ('shared', 'Shared/Hostel'),
+        ('events', 'Events'),
+    ]
+    
+    BADGE_CHOICES = [
+        ('popular', 'Most Popular'),
+        ('value', 'Best Value'),
+        ('premium', 'Premium'),
+        ('new', 'New'),
+        ('limited', 'Limited Time'),
+    ]
+    
+    name = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=200, unique=True, blank=True)
+    description = models.TextField(help_text="Short tagline for the combo")
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    
+    # Target audience
+    feeds = models.CharField(max_length=100, help_text="e.g., '1 person', '4 people'")
+    duration = models.CharField(max_length=100, help_text="e.g., '2 weeks', '1 month'")
+    meals_count = models.IntegerField(help_text="Approximate number of meals")
+    use_case = models.CharField(max_length=20, choices=USE_CASE_CHOICES, default='students')
+    
+    # Marketing
+    badge = models.CharField(max_length=20, choices=BADGE_CHOICES, blank=True, null=True)
+    image = models.ImageField(upload_to='combos/', blank=True, null=True)
+    
+    # Visibility
+    is_active = models.BooleanField(default=True)
+    is_featured = models.BooleanField(default=False, help_text="Show on featured combos section")
+    featured_order = models.IntegerField(default=0, help_text="Order in featured section (lower = first)")
+    
+    # Timestamps
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['price']
+        verbose_name = 'Food Combo'
+        verbose_name_plural = 'Food Combos'
+    
+    def __str__(self):
+        return f"{self.name} - ₦{self.price:,.0f}"
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            from django.utils.text import slugify
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+    
+    @property
+    def cost_per_meal(self):
+        """Calculate cost per meal"""
+        if self.meals_count > 0:
+            return self.price / self.meals_count
+        return 0
+    
+    @property
+    def savings_estimate(self):
+        """Estimate savings vs individual buying (rough 20-30%)"""
+        return self.price * 0.25  # 25% average savings
+    
+    @property
+    def item_count(self):
+        """Count of unique items in combo"""
+        return self.items.count()
+
+
+class ComboItem(models.Model):
+    """
+    Individual items within a combo package
+    """
+    combo = models.ForeignKey(Combo, on_delete=models.CASCADE, related_name='items')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='combo_items')
+    
+    # Quantity (flexible text format since combos use various measurements)
+    quantity_text = models.CharField(
+        max_length=100, 
+        help_text="e.g., '5 cups', 'half pint', '1 pack', '2 sachets'"
+    )
+    
+    # Optional: Numeric quantity for calculations
+    quantity_value = models.DecimalField(
+        max_digits=10, 
+        decimal_places=2, 
+        blank=True, 
+        null=True,
+        help_text="Numeric value for calculations (optional)"
+    )
+    
+    quantity_unit = models.CharField(
+        max_length=50, 
+        blank=True,
+        help_text="Unit: cups, kg, packs, liters, etc."
+    )
+    
+    # Optional notes
+    notes = models.CharField(
+        max_length=200, 
+        blank=True,
+        help_text="e.g., 'for breakfast', 'for rice & stew'"
+    )
+    
+    order = models.IntegerField(default=0, help_text="Display order in combo")
+    
+    class Meta:
+        ordering = ['order', 'product__name']
+        verbose_name = 'Combo Item'
+        verbose_name_plural = 'Combo Items'
+    
+    def __str__(self):
+        return f"{self.quantity_text} {self.product.name}"
+
+
+class ComboMealSuggestion(models.Model):
+    """
+    Meal ideas/recipes users can cook with a combo
+    """
+    combo = models.ForeignKey(Combo, on_delete=models.CASCADE, related_name='meal_suggestions')
+    meal_name = models.CharField(max_length=200, help_text="e.g., 'Jollof Rice', 'Beans Porridge'")
+    frequency = models.CharField(
+        max_length=100, 
+        help_text="e.g., '4-5 times', '10+ servings'"
+    )
+    order = models.IntegerField(default=0)
+    
+    class Meta:
+        ordering = ['order']
+        verbose_name = 'Meal Suggestion'
+        verbose_name_plural = 'Meal Suggestions'
+    
+    def __str__(self):
+        return f"{self.meal_name} ({self.frequency})"
