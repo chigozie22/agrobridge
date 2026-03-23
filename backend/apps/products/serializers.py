@@ -2,6 +2,12 @@ from rest_framework import serializers
 from .models import Product, Category
 from apps.vendors.models import VendorPrice
 
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['id', 'name', 'description', 'icon']
+
 class VendorPriceSerializer(serializers.ModelSerializer):
     vendor_name = serializers.CharField(source='vendor.name', read_only=True)
     vendor_type = serializers.CharField(source='vendor.get_vendor_type_display', read_only=True)
