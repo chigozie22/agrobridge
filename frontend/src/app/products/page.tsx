@@ -398,6 +398,175 @@ export default function ProductsPage() {
         </div>
 
         {/* ============================================ */}
+        {/* 4. WHY CHOOSE AGROBRIDGE SECTION             */}
+        {/* ============================================ */}
+        <div className="mb-16">
+          {/* Features Cards */}
+          <div className="text-center mb-12">
+            <p className="text-aj-yellow font-semibold text-sm uppercase tracking-wide mb-2">FEATURES</p>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Cool Features to Simplify Your Shopping
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Smart tools designed to make bulk buying easier and more affordable
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6 mb-16">
+            {/* Feature 1: Group Buying - Orange/Yellow */}
+            <div className="bg-gradient-to-br from-yellow-400 via-orange-400 to-orange-500 rounded-2xl p-8 text-white shadow-lg hover:shadow-2xl transition-all">
+              <div className="bg-white bg-opacity-20 rounded-full w-16 h-16 flex items-center justify-center mb-4">
+                <Users className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold mb-3">Cluster Buying</h3>
+              <p className="text-white text-opacity-90">
+                Join your neighbors to buy in bulk and save 20-30% on every purchase through group buying power.
+              </p>
+            </div>
+
+            {/* Feature 2: Smart Combos - Yellow/Gold */}
+            <div className="bg-gradient-to-br from-aj-yellow via-yellow-400 to-yellow-500 rounded-2xl p-8 text-aj-dark shadow-lg hover:shadow-2xl transition-all">
+              <div className="bg-aj-dark bg-opacity-10 rounded-full w-16 h-16 flex items-center justify-center mb-4">
+                <Sparkles className="w-8 h-8 text-aj-dark" />
+              </div>
+              <h3 className="text-2xl font-bold mb-3">Smart Food Bundles</h3>
+              <p className="text-aj-dark text-opacity-90">
+                Pre-planned meal packages that solve budgeting and meal planning. Know exactly what you can cook.
+              </p>
+            </div>
+
+            {/* Feature 3: Flexible Delivery - Green/Yellow */}
+            <div className="bg-gradient-to-br from-green-500 via-green-600 to-aj-yellow rounded-2xl p-8 text-white shadow-lg hover:shadow-2xl transition-all">
+              <div className="bg-white bg-opacity-20 rounded-full w-16 h-16 flex items-center justify-center mb-4">
+                <TrendingUp className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold mb-3">Batch Delivery</h3>
+              <p className="text-white text-opacity-90">
+                Choose same-day delivery or wait 2-3 days for cluster delivery and save an extra 5-10% on your order.
+              </p>
+            </div>
+          </div>
+
+          {/* Why Choose Section */}
+          <div className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-3xl overflow-hidden border-2 border-yellow-200">
+            <div className="grid md:grid-cols-2 gap-8 items-center">
+              {/* Left: Image */}
+              <div className="relative h-full min-h-[400px] bg-gradient-to-br from-aj-yellow to-orange-400 flex items-center justify-center p-8">
+                <div className="text-center">
+                  <div className="text-9xl mb-4">🚚</div>
+                  <div className="bg-white rounded-2xl p-6 shadow-xl">
+                    <p className="text-4xl font-bold text-gray-900 mb-2">₦45,000</p>
+                    <p className="text-gray-600">Saved by FUTO students<br/>this month</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right: Features List */}
+              <div className="p-8 md:p-12">
+                <p className="text-aj-yellow font-semibold text-sm uppercase tracking-wide mb-2">
+                  WHY CHOOSE AGROBRIDGE
+                </p>
+                <h2 className="text-3xl font-bold text-gray-900 mb-6">
+                  Your Ultimate Fresh Food Destination
+                </h2>
+
+                <div className="space-y-6">
+                  {/* Feature 1 */}
+                  <div className="flex gap-4">
+                    <div className="flex-shrink-0">
+                      <div className="bg-aj-yellow rounded-full w-12 h-12 flex items-center justify-center">
+                        <span className="text-2xl">🛒</span>
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-gray-900 mb-1">Convenience</h4>
+                      <p className="text-gray-600 text-sm">
+                        Shop from your hostel or home. No need to trek to Eziobodo market or Relief market.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Feature 2 */}
+                  <div className="flex gap-4">
+                    <div className="flex-shrink-0">
+                      <div className="bg-aj-yellow rounded-full w-12 h-12 flex items-center justify-center">
+                        <span className="text-2xl">📦</span>
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-gray-900 mb-1">Wide Product Range</h4>
+                      <p className="text-gray-600 text-sm">
+                        From fresh vegetables to grains, cereals, and proteins. Everything you need in one place.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Feature 3 */}
+                  <div className="flex gap-4">
+                    <div className="flex-shrink-0">
+                      <div className="bg-aj-yellow rounded-full w-12 h-12 flex items-center justify-center">
+                        <span className="text-2xl">⭐</span>
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-gray-900 mb-1">Quality Assurance</h4>
+                      <p className="text-gray-600 text-sm">
+                        Only verified vendors. Fresh products delivered to your cluster with quality guarantee.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Feature 4 */}
+                  <div className="flex gap-4">
+                    <div className="flex-shrink-0">
+                      <div className="bg-aj-yellow rounded-full w-12 h-12 flex items-center justify-center">
+                        <span className="text-2xl">💰</span>
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-gray-900 mb-1">Cost Savings</h4>
+                      <p className="text-gray-600 text-sm">
+                        Save 20-30% through group buying. Lower prices than retail markets, better than individual orders.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Feature 5 */}
+                  <div className="flex gap-4">
+                    <div className="flex-shrink-0">
+                      <div className="bg-aj-yellow rounded-full w-12 h-12 flex items-center justify-center">
+                        <span className="text-2xl">⏱️</span>
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-gray-900 mb-1">Time Efficiency</h4>
+                      <p className="text-gray-600 text-sm">
+                        Order in minutes, delivered to your hostel. Focus on your studies, we handle the shopping.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Feature 6 */}
+                  <div className="flex gap-4">
+                    <div className="flex-shrink-0">
+                      <div className="bg-aj-yellow rounded-full w-12 h-12 flex items-center justify-center">
+                        <span className="text-2xl">🚚</span>
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-gray-900 mb-1">Flexible Delivery</h4>
+                      <p className="text-gray-600 text-sm">
+                        Same-day, next-day, or cluster batch delivery. Choose what works for your schedule and budget.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ============================================ */}
         {/* 4. HOW IT WORKS SECTION                      */}
         {/* ============================================ */}
         <div className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-2xl p-8 border-2 border-yellow-200">
