@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { Truck, Leaf, Package, MapPin, Star, ChevronRight } from 'lucide-react'
 
 const clusters = [
@@ -20,6 +21,20 @@ const products = [
 ]
 
 export default function Home() {
+  const [user, setUser] = useState<any>(null)
+
+  useEffect(() => {
+    // Check if user is logged in
+    const storedUser = localStorage.getItem('user')
+    if (storedUser) {
+      try {
+        setUser(JSON.parse(storedUser))
+      } catch (err) {
+        console.error('Error parsing user data:', err)
+      }
+    }
+  }, [])
+
   const handleClusterSelect = (clusterName: string) => {
     const message = encodeURIComponent(`Hi! I want to join the ${clusterName} cluster on AgroBridge`)
     window.open(`https://wa.me/2348000000000?text=${message}`, '_blank')
@@ -45,17 +60,30 @@ export default function Home() {
             <div className="hidden md:flex items-center space-x-8">
               <a href="#home" className="text-gray-700 hover:text-aj-yellow transition">Home</a>
               <a href="#clusters" className="text-gray-700 hover:text-aj-yellow transition">Clusters</a>
-              <a href="#products" className="text-gray-700 hover:text-aj-yellow transition">Products</a>
+              <a href="/products" className="text-gray-700 hover:text-aj-yellow transition">Products</a>
               <a href="#about" className="text-gray-700 hover:text-aj-yellow transition">About Us</a>
-              <a href="/login" className="text-gray-700 hover:text-aj-yellow transition font-semibold">
-                Login
-              </a>
-              <a 
-                href="/signup"
-                className="bg-aj-yellow text-aj-dark px-6 py-2 rounded-full font-semibold hover:bg-yellow-400 transition"
-              >
-                Sign Up
-              </a>
+              {user ? (
+                <>
+                  <a href="/dashboard" className="text-gray-700 hover:text-aj-yellow transition font-semibold">
+                    Dashboard
+                  </a>
+                  <div className="bg-aj-yellow text-aj-dark px-4 py-2 rounded-full font-semibold">
+                    Cart (0)
+                  </div>
+                </>
+              ) : (
+                <>
+                  <a href="/login" className="text-gray-700 hover:text-aj-yellow transition font-semibold">
+                    Login
+                  </a>
+                  <a 
+                    href="/signup"
+                    className="bg-aj-yellow text-aj-dark px-6 py-2 rounded-full font-semibold hover:bg-yellow-400 transition"
+                  >
+                    Sign Up
+                  </a>
+                </>
+              )}
             </div>
           </div>
         </div>
