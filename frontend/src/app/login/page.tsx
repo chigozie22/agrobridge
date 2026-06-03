@@ -6,7 +6,7 @@ import { Eye, EyeOff, ArrowRight, LogIn } from 'lucide-react'
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
-    phone: '',
+    email: '',
     password: '',
     rememberMe: false,
   })
@@ -38,7 +38,7 @@ export default function LoginPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          phone: formData.phone,
+          email: formData.email,
           password: formData.password,
         }),
       })
@@ -51,7 +51,7 @@ export default function LoginPage() {
         localStorage.setItem('user', JSON.stringify(data.user))
         window.location.href = '/dashboard'
       } else {
-        setError(data.error || 'Invalid phone number or password')
+        setError(data.error || 'Invalid email or password')
       }
     } catch (err) {
       setError('Network error. Please check your connection.')
@@ -91,19 +91,20 @@ export default function LoginPage() {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Phone */}
+            {/* Email */}
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Phone Number
+                Email Address
               </label>
               <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
+                type="email"
+                name="email"
+                value={formData.email}
                 onChange={handleChange}
                 required
+                autoComplete="email"
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-aj-yellow focus:border-transparent transition text-gray-900"
-                placeholder="08012345678"
+                placeholder="you@example.com"
               />
             </div>
 

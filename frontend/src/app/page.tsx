@@ -4,20 +4,21 @@ import { useState, useEffect } from 'react'
 import { Truck, Leaf, Package, MapPin, Star, ChevronRight } from 'lucide-react'
 
 const clusters = [
-  { id: 1, name: 'ESUT - Agbani', location: 'Enugu State', users: 234 },
-  { id: 2, name: 'UNN - Nsukka', location: 'Enugu State', users: 456 },
-  { id: 3, name: 'Trans Ekulu Estate', location: 'Enugu', users: 189 },
-  { id: 4, name: 'Independence Layout', location: 'Enugu', users: 312 },
-  { id: 5, name: 'Akwata Market', location: 'Enugu', users: 167 },
+  { id: 1, name: 'FUTO - Owerri',       location: 'Imo State',   users: 512, delivery_fee: 300,  next_delivery: 'Tue & Fri' },
+  { id: 2, name: 'Ikenegbu Layout',     location: 'Owerri',      users: 348, delivery_fee: 400,  next_delivery: 'Mon & Thu' },
+  { id: 3, name: 'New Owerri',          location: 'Owerri',      users: 276, delivery_fee: 350,  next_delivery: 'Wed & Sat' },
+  { id: 4, name: 'Egbu Road Area',      location: 'Owerri',      users: 195, delivery_fee: 450,  next_delivery: 'Tue & Fri' },
+  { id: 5, name: 'Aladinma Estate',     location: 'Owerri',      users: 231, delivery_fee: 400,  next_delivery: 'Mon & Thu' },
+  { id: 6, name: 'Uratta / Akachi',     location: 'Owerri North', users: 163, delivery_fee: 500, next_delivery: 'Wed & Sat' },
 ]
 
 const products = [
-  { name: 'Fresh Tomatoes', price: '750', image: '🍅', rating: 4.8, category: 'Vegetables' },
-  { name: 'Local Rice (50kg)', price: '45,000', image: '🌾', rating: 4.9, category: 'Grains' },
-  { name: 'Fresh Yam', price: '1,200', image: '🍠', rating: 4.7, category: 'Tubers' },
-  { name: 'Plantain (Bunch)', price: '2,500', image: '🍌', rating: 4.6, category: 'Fruits' },
-  { name: 'Fresh Fish', price: '3,500', image: '🐟', rating: 4.8, category: 'Protein' },
-  { name: 'Palm Oil (4L)', price: '8,000', image: '🛢️', rating: 4.9, category: 'Cooking' },
+  { name: 'Ripe Plantain',   price: '2,500',  image: '/images/products/ripe_plantain.jpg', rating: 4.8, category: 'Fruits'   },
+  { name: 'Garri (25kg)',    price: '8,500',  image: '/images/products/garri.jpg',          rating: 4.9, category: 'Grains'   },
+  { name: 'Frozen Fish',     price: '3,500',  image: '/images/products/frozen-fish.jpg',    rating: 4.7, category: 'Protein'  },
+  { name: 'Brown Beans',     price: '6,200',  image: '/images/products/brown_beans.jpg',    rating: 4.6, category: 'Grains'   },
+  { name: 'Cornflakes',      price: '4,800',  image: '/images/products/cornflakes.jpg',     rating: 4.8, category: 'Cereals'  },
+  { name: 'Golden Morn',     price: '3,200',  image: '/images/products/golden_morn.jpg',    rating: 4.7, category: 'Cereals'  },
 ]
 
 export default function Home() {
@@ -172,92 +173,147 @@ export default function Home() {
       </section>
 
       {/* Clusters Section */}
-      <section id="clusters" className="py-20 bg-white">
+      <section id="clusters" className="py-20 bg-gradient-to-b from-orange-50 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Our <span className="text-aj-yellow">Active</span> Clusters
+          <div className="text-center mb-12">
+            <span className="text-aj-yellow font-semibold text-sm uppercase tracking-widest">Nearby Buying Groups</span>
+            <h2 className="text-4xl font-bold text-gray-900 mt-2 mb-4">
+              Find Your <span className="text-aj-yellow">Cluster</span>
             </h2>
-            <p className="text-xl text-gray-600">Join a cluster near you and start saving on food</p>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Pool your orders with neighbours. The more people in your cluster, the lower everyone pays.
+            </p>
+          </div>
+
+          {/* Summary bar */}
+          <div className="bg-aj-dark rounded-2xl p-6 grid grid-cols-3 gap-4 mb-12 text-center">
+            <div>
+              <p className="text-3xl font-bold text-aj-yellow">6</p>
+              <p className="text-gray-400 text-sm mt-0.5">Active Clusters</p>
+            </div>
+            <div className="border-x border-gray-700">
+              <p className="text-3xl font-bold text-aj-yellow">1,725+</p>
+              <p className="text-gray-400 text-sm mt-0.5">Total Members</p>
+            </div>
+            <div>
+              <p className="text-3xl font-bold text-aj-yellow">₦2,400</p>
+              <p className="text-gray-400 text-sm mt-0.5">Avg Monthly Savings</p>
+            </div>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {clusters.map((cluster) => (
-              <button
-                key={cluster.id}
-                onClick={() => handleClusterSelect(cluster.name)}
-                className="bg-white border-2 border-gray-200 hover:border-aj-yellow rounded-2xl p-6 text-left transition-all hover:shadow-xl group"
-              >
-                <div className="flex items-start justify-between mb-4">
-                  <div className="bg-orange-100 rounded-full p-3">
-                    <MapPin className="w-6 h-6 text-aj-yellow" />
+              <div key={cluster.id} className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all group border border-gray-100">
+                <div className="h-1.5 bg-gradient-to-r from-aj-yellow to-orange-400" />
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="inline-flex items-center gap-1.5 bg-green-50 text-green-600 text-xs font-bold px-2.5 py-1 rounded-full">
+                      <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block animate-pulse" />
+                      ACTIVE
+                    </span>
+                    <span className="text-xs text-gray-400 font-medium">Cluster #{cluster.id}</span>
                   </div>
-                  <ChevronRight className="w-6 h-6 text-gray-400 group-hover:text-aj-yellow transition" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{cluster.name}</h3>
-                <p className="text-gray-600 mb-4">{cluster.location}</p>
-                <div className="flex items-center gap-2 text-sm text-gray-500">
-                  <div className="flex -space-x-2">
-                    <div className="w-6 h-6 rounded-full bg-aj-green border-2 border-white"></div>
-                    <div className="w-6 h-6 rounded-full bg-aj-yellow border-2 border-white"></div>
-                    <div className="w-6 h-6 rounded-full bg-orange-400 border-2 border-white"></div>
+
+                  <h3 className="text-xl font-bold text-gray-900 mb-1 group-hover:text-aj-yellow transition-colors">
+                    {cluster.name}
+                  </h3>
+                  <p className="text-gray-500 text-sm flex items-center gap-1 mb-5">
+                    <MapPin className="w-3.5 h-3.5 text-aj-yellow flex-shrink-0" />
+                    {cluster.location}
+                  </p>
+
+                  <div className="grid grid-cols-3 gap-2 mb-5">
+                    <div className="bg-gray-50 rounded-xl p-2.5 text-center">
+                      <p className="text-lg font-bold text-gray-900">{cluster.users}+</p>
+                      <p className="text-xs text-gray-500">Members</p>
+                    </div>
+                    <div className="bg-orange-50 rounded-xl p-2.5 text-center">
+                      <p className="text-lg font-bold text-aj-yellow">₦{cluster.delivery_fee}</p>
+                      <p className="text-xs text-gray-500">Delivery</p>
+                    </div>
+                    <div className="bg-yellow-50 rounded-xl p-2.5 text-center">
+                      <p className="text-xs font-bold text-gray-700 leading-tight">{cluster.next_delivery}</p>
+                      <p className="text-xs text-gray-500">Delivery days</p>
+                    </div>
                   </div>
-                  <span>{cluster.users}+ members</span>
+
+                  <button
+                    onClick={() => handleClusterSelect(cluster.name)}
+                    className="w-full bg-gradient-to-r from-aj-yellow to-orange-400 text-aj-dark py-3 rounded-xl font-bold hover:from-yellow-400 transition flex items-center justify-center gap-2 text-sm"
+                  >
+                    Join This Cluster <ChevronRight className="w-4 h-4" />
+                  </button>
                 </div>
-              </button>
+              </div>
             ))}
           </div>
+
+          <p className="text-center text-sm text-gray-500 mt-8">
+            Don't see your area?{' '}
+            <button
+              onClick={() => handleClusterSelect('a new area')}
+              className="text-aj-yellow font-semibold hover:underline"
+            >
+              Request a new cluster →
+            </button>
+          </p>
         </div>
       </section>
 
       {/* Products Section */}
       <section id="products" className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+          <div className="text-center mb-12">
+            <span className="text-aj-yellow font-semibold text-sm uppercase tracking-widest">Fresh & Affordable</span>
+            <h2 className="text-4xl font-bold text-gray-900 mt-2 mb-4">
               Our <span className="text-aj-yellow">Best Selling</span> Products
             </h2>
-            <p className="text-xl text-gray-600">Fresh from farm to your table</p>
+            <p className="text-lg text-gray-600">Sourced directly from verified vendors near you</p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {products.map((product, idx) => (
-              <div key={idx} className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition group">
-                <div className="bg-gradient-to-br from-orange-100 to-yellow-100 p-12 flex items-center justify-center">
-                  <div className="text-8xl">{product.image}</div>
+              <div key={idx} className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all group">
+                <div className="relative h-52 overflow-hidden bg-gradient-to-br from-orange-100 to-yellow-100">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    onError={e => { (e.target as HTMLImageElement).style.display = 'none' }}
+                  />
+                  <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-aj-yellow text-xs font-bold px-2.5 py-1 rounded-full">
+                    {product.category}
+                  </span>
                 </div>
-                <div className="p-6">
-                  <div className="text-xs text-aj-yellow font-semibold mb-2">{product.category}</div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">{product.name}</h3>
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="flex text-yellow-400">
-                      {'★'.repeat(Math.floor(product.rating))}
-                    </div>
-                    <span className="text-sm text-gray-600">({product.rating})</span>
+                <div className="p-5">
+                  <h3 className="text-lg font-bold text-gray-900 mb-1">{product.name}</h3>
+                  <div className="flex items-center gap-1.5 mb-4">
+                    <div className="flex text-yellow-400 text-sm">{'★'.repeat(Math.floor(product.rating))}</div>
+                    <span className="text-sm text-gray-500">({product.rating})</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
-                      <span className="text-2xl font-bold text-aj-green">₦{product.price}</span>
+                      <span className="text-2xl font-bold text-gray-900">₦{product.price}</span>
                       <span className="text-sm text-gray-500">/unit</span>
                     </div>
-                    <button 
-                      onClick={() => window.location.href = '/signup'}
-                      className="bg-aj-yellow text-aj-dark px-6 py-2 rounded-full font-semibold hover:bg-yellow-400 transition"
+                    <a
+                      href="/products"
+                      className="bg-aj-yellow text-aj-dark px-5 py-2 rounded-xl font-bold hover:bg-yellow-400 transition text-sm"
                     >
                       Order
-                    </button>
+                    </a>
                   </div>
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="text-center mt-12">
+          <div className="text-center mt-10">
             <a
-              href="/signup"
+              href="/products"
               className="inline-block bg-aj-dark text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-800 transition"
             >
-              Get Started - See All Products
+              See All Products →
             </a>
           </div>
         </div>

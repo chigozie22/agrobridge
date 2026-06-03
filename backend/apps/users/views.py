@@ -49,14 +49,14 @@ class UserLoginView(APIView):
         serializer = UserLoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         
-        phone = serializer.validated_data['phone']
+        email = serializer.validated_data['email']
         password = serializer.validated_data['password']
-        
-        user = authenticate(phone=phone, password=password)
-        
+
+        user = authenticate(email=email, password=password)
+
         if user is None:
             return Response({
-                'error': 'Invalid credentials'
+                'error': 'Invalid email or password'
             }, status=status.HTTP_401_UNAUTHORIZED)
         
         if not user.is_active:

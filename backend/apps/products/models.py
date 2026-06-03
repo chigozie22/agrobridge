@@ -1,6 +1,7 @@
 """
 Product models for AgroBridge
 """
+from decimal import Decimal
 from django.db import models
 
 
@@ -151,15 +152,13 @@ class Combo(models.Model):
     
     @property
     def cost_per_meal(self):
-        """Calculate cost per meal"""
         if self.meals_count > 0:
             return self.price / self.meals_count
-        return 0
-    
+        return Decimal('0')
+
     @property
     def savings_estimate(self):
-        """Estimate savings vs individual buying (rough 20-30%)"""
-        return self.price * 0.25  # 25% average savings
+        return self.price * Decimal('0.25')
     
     @property
     def item_count(self):

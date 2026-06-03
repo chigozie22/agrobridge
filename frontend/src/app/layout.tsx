@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import { CartProvider } from '@/context/CartContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -10,14 +11,14 @@ export const metadata: Metadata = {
   keywords: 'food delivery, bulk buying, group buying, Nigeria food, cheap food prices, AJ-Fresh Farmfoods',
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <CartProvider>
+          {children}
+        </CartProvider>
+      </body>
     </html>
   )
 }

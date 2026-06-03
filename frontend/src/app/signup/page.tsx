@@ -72,11 +72,11 @@ export default function SignupPage() {
         },
         body: JSON.stringify({
           name: formData.name,
-          phone: formData.phone,
           email: formData.email,
-          cluster: formData.cluster,
+          phone: formData.phone,
+          cluster: formData.cluster || null,
           password: formData.password,
-          role: 'BUYER',
+          password_confirm: formData.confirmPassword,
         }),
       })
 
@@ -185,17 +185,38 @@ export default function SignupPage() {
               )}
             </div>
 
+            {/* Email */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Email Address
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                autoComplete="email"
+                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-aj-yellow focus:border-transparent transition text-gray-900 ${
+                  fieldErrors.email ? 'border-red-500' : 'border-gray-300'
+                }`}
+                placeholder="you@example.com"
+              />
+              {fieldErrors.email && (
+                <p className="text-red-600 text-sm mt-1">{fieldErrors.email}</p>
+              )}
+            </div>
+
             {/* Phone */}
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Phone Number
+                Phone Number <span className="text-gray-400 font-normal">(for delivery updates)</span>
               </label>
               <input
                 type="tel"
                 name="phone"
                 value={formData.phone}
                 onChange={handleChange}
-                required
                 className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-aj-yellow focus:border-transparent transition text-gray-900 ${
                   fieldErrors.phone ? 'border-red-500' : 'border-gray-300'
                 }`}
@@ -203,26 +224,6 @@ export default function SignupPage() {
               />
               {fieldErrors.phone && (
                 <p className="text-red-600 text-sm mt-1">{fieldErrors.phone}</p>
-              )}
-            </div>
-
-            {/* Email */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Email Address <span className="text-gray-400">(Optional)</span>
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-aj-yellow focus:border-transparent transition text-gray-900 ${
-                  fieldErrors.email ? 'border-red-500' : 'border-gray-300'
-                }`}
-                placeholder="john@example.com"
-              />
-              {fieldErrors.email && (
-                <p className="text-red-600 text-sm mt-1">{fieldErrors.email}</p>
               )}
             </div>
 

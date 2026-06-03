@@ -8,29 +8,29 @@ from django.utils import timezone
 
 class UserManager(BaseUserManager):
     """Custom user manager"""
-    
-    def create_user(self, phone, password=None, **extra_fields):
+
+    def create_user(self, email, password=None, **extra_fields):
         """Create and return a regular user"""
-        if not phone:
-            raise ValueError('Users must have a phone number')
-        
-        user = self.model(phone=phone, **extra_fields)
+        if not email:
+            raise ValueError('Users must have an email address')
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
-    
-    def create_superuser(self, phone, password=None, **extra_fields):
+
+    def create_superuser(self, email, password=None, **extra_fields):
         """Create and return a superuser"""
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('role', 'ADMIN')
-        
+
         if extra_fields.get('is_staff') is not True:
             raise ValueError('Superuser must have is_staff=True')
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must have is_superuser=True')
-        
-        return self.create_user(phone, password, **extra_fields)
+
+        return self.create_user(email, password, **extra_fields)
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -45,8 +45,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     
     id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=255)
-    phone = models.CharField(max_length=20, unique=True, db_index=True)
-    email = models.EmailField(blank=True, null=True)
+    email = models.EmailField(unique=True, db_index=True)
+    phone = models.CharField(max_length=20, blank=True, default='')
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='CUSTOMER')
     
     # Cluster relationship
@@ -70,7 +70,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     
     objects = UserManager()
     
-    USERNAME_FIELD = 'phone'
+    USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['name']
     
     class Meta:
@@ -78,7 +78,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name = 'User'
         verbose_name_plural = 'Users'
         indexes = [
-            models.Index(fields=['phone']),
+            models.Index(fields=['email']),
             models.Index(fields=['role']),
             models.Index(fields=['cluster']),
         ]

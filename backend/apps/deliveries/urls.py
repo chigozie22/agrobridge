@@ -1,9 +1,7 @@
-from django.urls import path
-from .views import DeliveryViewSet  # ← Should be DeliveryViewSet, not OrderViewSet!
+from rest_framework.routers import SimpleRouter
+from .views import DeliveryViewSet
 
-app_name = 'deliveries'
+router = SimpleRouter()
+router.register('', DeliveryViewSet, basename='delivery')
 
-urlpatterns = [
-    path('', DeliveryViewSet.as_view({'get': 'list', 'post': 'create'}), name='delivery-list'),
-    path('<int:pk>/', DeliveryViewSet.as_view({'get': 'retrieve', 'put': 'update', 'patch': 'partial_update', 'delete': 'destroy'}), name='delivery-detail'),
-]
+urlpatterns = router.urls

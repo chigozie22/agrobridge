@@ -8,11 +8,11 @@
 #     path('<int:pk>/', ProductViewSet.as_view({'get': 'retrieve'}), name='product-detail'),
 # ]
 
-from django.urls import path
-from rest_framework.routers import DefaultRouter
-from .views import ProductViewSet
+from rest_framework.routers import SimpleRouter
+from .views import ProductViewSet, ComboViewSet
 
-router = DefaultRouter()
+router = SimpleRouter()
+router.register('combos', ComboViewSet, basename='combo')
 router.register('', ProductViewSet, basename='product')
 
 urlpatterns = router.urls

@@ -172,6 +172,14 @@ class Command(BaseCommand):
                 name='Oils & Spices',
                 defaults={'description': 'Cooking oils and spices', 'icon': '🛢️'}
             )[0],
+            'Dairy': Category.objects.get_or_create(
+                name='Dairy',
+                defaults={'description': 'Milk, yogurt, butter and dairy products', 'icon': '🥛'}
+            )[0],
+            'Poultry': Category.objects.get_or_create(
+                name='Poultry',
+                defaults={'description': 'Chicken, turkey and poultry products', 'icon': '🍗'}
+            )[0],
         }
         
         self.stdout.write(f'✅ Categories created: {len(cats)}')
@@ -227,6 +235,112 @@ class Command(BaseCommand):
         # ==========================================
         
         products_data = [
+            # ── NEW PRODUCTS ──
+            {
+                'name': 'Indomie Instant Noodles',
+                'description': 'Indomie superpack instant noodles',
+                'category': cats['Cereals'],
+                'unit': 'pack',
+                'requires_refrigeration': False,
+                'shelf_life_days': 365,
+            },
+            {
+                'name': 'Golden Penny Spaghetti',
+                'description': 'Premium golden penny spaghetti pasta',
+                'category': cats['Grains'],
+                'unit': 'pack',
+                'requires_refrigeration': False,
+                'shelf_life_days': 365,
+            },
+            {
+                'name': 'Eggs',
+                'description': 'Fresh table eggs',
+                'category': cats['Protein'],
+                'unit': 'piece',
+                'requires_refrigeration': True,
+                'shelf_life_days': 21,
+            },
+            {
+                'name': 'Gino Tomato Paste',
+                'description': 'Gino tomato paste rolls / sachets',
+                'category': cats['Vegetables'],
+                'unit': 'pack',
+                'requires_refrigeration': False,
+                'shelf_life_days': 180,
+            },
+            {
+                'name': 'Groundnut Oil',
+                'description': 'Pure groundnut / vegetable cooking oil',
+                'category': cats['Oils'],
+                'unit': 'litre',
+                'requires_refrigeration': False,
+                'shelf_life_days': 365,
+            },
+            {
+                'name': 'Maggi/Knorr Seasoning',
+                'description': 'Maggi or Knorr seasoning cubes and salt pack',
+                'category': cats['Oils'],
+                'unit': 'pack',
+                'requires_refrigeration': False,
+                'shelf_life_days': 365,
+            },
+            {
+                'name': 'Milo',
+                'description': 'Nestle Milo chocolate malt drink rolls',
+                'category': cats['Cereals'],
+                'unit': 'pack',
+                'requires_refrigeration': False,
+                'shelf_life_days': 365,
+            },
+            {
+                'name': 'Peak Milk',
+                'description': 'Peak full-cream milk rolls / sachets',
+                'category': cats['Cereals'],
+                'unit': 'pack',
+                'requires_refrigeration': False,
+                'shelf_life_days': 365,
+            },
+            {
+                'name': 'Garri',
+                'description': 'White or yellow garri (cassava flakes)',
+                'category': cats['Grains'],
+                'unit': 'kg',
+                'requires_refrigeration': False,
+                'shelf_life_days': 180,
+            },
+            {
+                'name': 'Brown Beans',
+                'description': 'Nigerian brown/honey beans',
+                'category': cats['Grains'],
+                'unit': 'kg',
+                'requires_refrigeration': False,
+                'shelf_life_days': 365,
+            },
+            {
+                'name': 'Sugar',
+                'description': 'Granulated white sugar (cube pack)',
+                'category': cats['Oils'],
+                'unit': 'kg',
+                'requires_refrigeration': False,
+                'shelf_life_days': 730,
+            },
+            {
+                'name': 'Crayfish',
+                'description': 'Dry ground crayfish (cup measured)',
+                'category': cats['Protein'],
+                'unit': 'kg',
+                'requires_refrigeration': False,
+                'shelf_life_days': 90,
+            },
+            {
+                'name': 'Curry Powder',
+                'description': 'Gino or similar curry powder',
+                'category': cats['Oils'],
+                'unit': 'pack',
+                'requires_refrigeration': False,
+                'shelf_life_days': 365,
+            },
+            # ── ORIGINAL PRODUCTS ──
             {
                 'name': 'Fresh Tomatoes',
                 'description': 'Fresh red tomatoes from local farms',
@@ -307,6 +421,72 @@ class Command(BaseCommand):
                 'requires_refrigeration': False,
                 'shelf_life_days': 180,
             },
+            # ── DAIRY ──
+            {
+                'name': 'Fresh Cow Milk',
+                'description': 'Fresh pasteurized cow milk (per litre)',
+                'category': cats['Dairy'],
+                'unit': 'litre',
+                'requires_refrigeration': True,
+                'shelf_life_days': 5,
+            },
+            {
+                'name': 'Yogurt',
+                'description': 'Plain or flavoured yogurt cups',
+                'category': cats['Dairy'],
+                'unit': 'cup',
+                'requires_refrigeration': True,
+                'shelf_life_days': 14,
+            },
+            {
+                'name': 'Butter',
+                'description': 'Salted cooking and table butter',
+                'category': cats['Dairy'],
+                'unit': 'pack',
+                'requires_refrigeration': True,
+                'shelf_life_days': 30,
+            },
+            {
+                'name': 'Cheese',
+                'description': 'Processed cheddar or white cheese',
+                'category': cats['Dairy'],
+                'unit': 'pack',
+                'requires_refrigeration': True,
+                'shelf_life_days': 21,
+            },
+            # ── POULTRY ──
+            {
+                'name': 'Broiler Chicken',
+                'description': 'Fresh whole broiler chicken (dressed)',
+                'category': cats['Poultry'],
+                'unit': 'kg',
+                'requires_refrigeration': True,
+                'shelf_life_days': 3,
+            },
+            {
+                'name': 'Chicken Parts',
+                'description': 'Assorted chicken parts — wings, thighs, drumsticks',
+                'category': cats['Poultry'],
+                'unit': 'kg',
+                'requires_refrigeration': True,
+                'shelf_life_days': 3,
+            },
+            {
+                'name': 'Turkey',
+                'description': 'Fresh whole turkey (dressed)',
+                'category': cats['Poultry'],
+                'unit': 'kg',
+                'requires_refrigeration': True,
+                'shelf_life_days': 3,
+            },
+            {
+                'name': 'Smoked Chicken',
+                'description': 'Pre-smoked whole chicken',
+                'category': cats['Poultry'],
+                'unit': 'piece',
+                'requires_refrigeration': False,
+                'shelf_life_days': 7,
+            },
         ]
         
         products = []
@@ -343,8 +523,12 @@ class Command(BaseCommand):
                     base_price = random.randint(500, 1500)
                 elif product.category.name == 'Protein':
                     base_price = random.randint(1000, 3000)
-                elif product.category.name == 'Oils':
+                elif product.category.name == 'Oils & Spices':
                     base_price = random.randint(1500, 4000)
+                elif product.category.name == 'Dairy':
+                    base_price = random.randint(800, 3500)
+                elif product.category.name == 'Poultry':
+                    base_price = random.randint(2500, 8000)
                 else:
                     base_price = random.randint(500, 2000)
                 

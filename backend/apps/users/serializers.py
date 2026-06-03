@@ -8,11 +8,11 @@ from .models import User
 
 class UserSerializer(serializers.ModelSerializer):
     """Serializer for User model"""
-    
+
     class Meta:
         model = User
         fields = [
-            'id', 'name', 'phone', 'email', 'role',
+            'id', 'name', 'email', 'phone', 'role',
             'cluster', 'address', 'avatar', 'date_joined'
         ]
         read_only_fields = ['id', 'date_joined']
@@ -26,16 +26,16 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         validators=[validate_password]
     )
     password_confirm = serializers.CharField(write_only=True, required=True)
-    
+
     class Meta:
         model = User
-        fields = ['name', 'phone', 'email', 'password', 'password_confirm', 'cluster']
-    
+        fields = ['name', 'email', 'phone', 'password', 'password_confirm', 'cluster']
+
     def validate(self, attrs):
         if attrs['password'] != attrs['password_confirm']:
             raise serializers.ValidationError({"password": "Password fields didn't match."})
         return attrs
-    
+
     def create(self, validated_data):
         validated_data.pop('password_confirm')
         user = User.objects.create_user(**validated_data)
@@ -44,7 +44,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
 class UserLoginSerializer(serializers.Serializer):
     """Serializer for user login"""
-    phone = serializers.CharField(required=True)
+    email = serializers.EmailField(required=True)
     password = serializers.CharField(required=True, write_only=True)
 
 
