@@ -11,7 +11,7 @@ const IMAGES = {
   hero:    'https://images.unsplash.com/photo-1569288035841-428571e02b16?auto=format&fit=crop&w=1400&q=80',
   crate1:  'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?auto=format&fit=crop&w=600&q=80',
   crate2:  'https://images.unsplash.com/photo-1498654077810-12c21d4d6dc3?auto=format&fit=crop&w=600&q=80',
-  farm:    'https://images.unsplash.com/photo-1548946526-f69e2424cf45?auto=format&fit=crop&w=600&q=80',
+  farm:    '/images/cluster_image.jpg',
   fresh:   'https://images.unsplash.com/photo-1506976785307-8732e854ad03?auto=format&fit=crop&w=600&q=80',
 }
 
@@ -364,16 +364,22 @@ export default function PoultryServicesPage() {
                 <div className="flex items-center gap-4">
                   <button type="button"
                     onClick={() => setForm(f => ({ ...f, crates: Math.max(1, f.crates - 1) }))}
-                    className="w-11 h-11 rounded-xl border-2 border-gray-200 flex items-center justify-center text-xl font-bold hover:border-aj-yellow transition"
-                  >−</button>
-                  <div className="text-center">
+                    className="w-11 h-11 rounded-xl border-2 border-gray-200 bg-white flex items-center justify-center hover:border-aj-yellow hover:bg-yellow-50 transition select-none"
+                    style={{ fontSize: '1.5rem', lineHeight: 1, fontWeight: 700, color: '#1A1A1A' }}
+                  >
+                    <span aria-hidden="true">&#8722;</span>
+                  </button>
+                  <div className="text-center min-w-[60px]">
                     <p className="text-3xl font-bold text-gray-900">{form.crates}</p>
                     <p className="text-xs text-gray-500">crate{form.crates > 1 ? 's' : ''} ({form.crates * 30} eggs)</p>
                   </div>
                   <button type="button"
                     onClick={() => setForm(f => ({ ...f, crates: Math.min(100, f.crates + 1) }))}
-                    className="w-11 h-11 rounded-xl border-2 border-gray-200 flex items-center justify-center text-xl font-bold hover:border-aj-yellow transition"
-                  >+</button>
+                    className="w-11 h-11 rounded-xl border-2 border-gray-200 bg-white flex items-center justify-center hover:border-aj-yellow hover:bg-yellow-50 transition select-none"
+                    style={{ fontSize: '1.5rem', lineHeight: 1, fontWeight: 700, color: '#1A1A1A' }}
+                  >
+                    <span aria-hidden="true">&#43;</span>
+                  </button>
                   <div className="ml-4 bg-yellow-50 border border-yellow-200 rounded-xl px-4 py-2">
                     <p className="text-xs text-gray-500">Total</p>
                     <p className="text-xl font-bold text-aj-yellow">₦{total.toLocaleString()}</p>
