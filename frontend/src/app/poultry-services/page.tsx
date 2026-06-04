@@ -227,7 +227,7 @@ export default function PoultryServicesPage() {
             {
               img: IMAGES.crate2,
               title: 'Simple & Transparent',
-              desc: '₦5,650 per crate of 30 eggs. No hidden fees. You pay cash or transfer on delivery.',
+              desc: '₦5,650 per crate of 30 eggs. Low delivery charges apply based on your cluster. Pay cash or transfer on delivery.',
             },
           ].map(card => (
             <div key={card.title} className="rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition group">
@@ -403,7 +403,7 @@ export default function PoultryServicesPage() {
                   : <><CheckCircle className="w-5 h-5" /> Confirm Booking — ₦{total.toLocaleString()}</>
                 }
               </button>
-              <p className="text-center text-xs text-gray-400">Pay on delivery · No upfront payment required</p>
+              <p className="text-center text-xs text-gray-400">Pay on delivery · Low delivery charges apply · No upfront payment required</p>
             </form>
 
             {/* Sidebar summary */}
@@ -433,7 +433,7 @@ export default function PoultryServicesPage() {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Delivery fee</span>
-                    <span className="font-semibold text-green-600">Free</span>
+                    <span className="font-semibold text-aj-yellow">Low charges apply</span>
                   </div>
                   <div className="border-t border-gray-100 pt-3 flex justify-between">
                     <span className="font-bold text-gray-900">Total (pay on delivery)</span>
