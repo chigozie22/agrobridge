@@ -222,7 +222,7 @@ export default function PoultryServicesPage() {
             {
               img: IMAGES.farm,
               title: 'Cluster-Based Delivery',
-              desc: 'We deliver to all 6 AgroBridge clusters in Owerri. Your rider calls 30 minutes before arriving.',
+              desc: 'We deliver to all 6 major residential clusters in Owerri. Your rider calls 30 minutes before arriving.',
             },
             {
               img: IMAGES.crate2,
