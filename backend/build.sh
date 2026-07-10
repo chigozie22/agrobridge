@@ -10,12 +10,14 @@ python manage.py seed_products
 python manage.py seed_combos
 python manage.py shell -c "
 from apps.users.models import User
-u = User.objects.filter(email='trentjoshuaeee@gmail.com').first()
-if u:
+email = 'trentjoshuaeee@gmail.com'
+u = User.objects.filter(email=email).first()
+if not u:
+    u = User.objects.create_superuser(email=email, password='Admin@Agrobridge1', name='Chigozie')
+    print('Superuser created:', email)
+else:
     u.is_staff = True
     u.is_superuser = True
     u.save()
-    print('Admin promoted:', u.email)
-else:
-    print('User not found')
+    print('Superuser promoted:', email)
 "
