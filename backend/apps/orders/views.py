@@ -9,6 +9,7 @@ from rest_framework.response import Response
 
 from .models import Order
 from .serializers import OrderCreateSerializer, OrderReadSerializer
+from .emails import send_order_confirmation, send_status_update
 
 
 class OrderViewSet(viewsets.GenericViewSet):
@@ -22,6 +23,7 @@ class OrderViewSet(viewsets.GenericViewSet):
         serializer = OrderCreateSerializer(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
         order = serializer.save()
+        send_order_confirmation(order)
         return Response(OrderReadSerializer(order).data, status=status.HTTP_201_CREATED)
 
     # GET /api/orders/
@@ -103,6 +105,7 @@ class OrderViewSet(viewsets.GenericViewSet):
                 order.paid_at = timezone.now()
                 order.confirmed_at = timezone.now()
                 order.save()
+                send_status_update(order)
                 return Response(OrderReadSerializer(order).data)
             else:
                 order.payment_status = 'FAILED'
@@ -125,6 +128,7 @@ class OrderViewSet(viewsets.GenericViewSet):
         if new_status == 'CONFIRMED' and not order.confirmed_at:
             order.confirmed_at = timezone.now()
         order.save()
+        send_status_update(order)
         return Response(OrderReadSerializer(order).data)
 
     # GET /api/orders/all/  (admin only)

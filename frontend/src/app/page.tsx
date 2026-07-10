@@ -60,12 +60,12 @@ export default function Home() {
             </div>
             <div className="hidden md:flex items-center space-x-8">
               <a href="#home" className="text-gray-700 hover:text-aj-yellow transition">Home</a>
-              <a href="#clusters" className="text-gray-700 hover:text-aj-yellow transition">Clusters</a>
+              <a href="/clusters" className="text-gray-700 hover:text-aj-yellow transition">Clusters</a>
               <a href="/products" className="text-gray-700 hover:text-aj-yellow transition">Products</a>
               <a href="/poultry-services" className="text-gray-700 hover:text-aj-yellow transition flex items-center gap-1">
                 🥚 Poultry Services
               </a>
-              <a href="#about" className="text-gray-700 hover:text-aj-yellow transition">About Us</a>
+              <a href="/about" className="text-gray-700 hover:text-aj-yellow transition">About Us</a>
               {user ? (
                 <>
                   <a href="/dashboard" className="text-gray-700 hover:text-aj-yellow transition font-semibold">

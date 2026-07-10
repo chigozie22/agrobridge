@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p \"c:\\\\Users\\\\NONSO\\\\Desktop\\\\Agrobridge\\\\agrobridge-v2\\\\agrobridge\\\\frontend\\\\src\\\\app\\\\products\\\\combos\\\\[slug]\")",
+      "Bash(mkdir -p \"c:/Users/NONSO/Desktop/Agrobridge/agrobridge-v2/agrobridge/frontend/src/app/api/combo-images\")",
+      "PowerShell(node -e \"require\\('sharp'\\); console.log\\('sharp OK'\\)\" 2>&1)",
+      "PowerShell($projDir = \"C:\\\\Users\\\\NONSO\\\\Desktop\\\\Agrobridge\\\\agrobridge-v2\\\\agrobridge\\\\frontend\")",
+      "Bash(python manage.py makemigrations orders)",
+      "Bash(python manage.py migrate)",
+      "Bash(mkdir -p \"/c/Users/NONSO/Desktop/Agrobridge/agrobridge-v2/agrobridge/frontend/src/app/checkout\" && mkdir -p \"/c/Users/NONSO/Desktop/Agrobridge/agrobridge-v2/agrobridge/frontend/src/app/orders/[id]\")",
+      "Bash(mkdir -p \"/c/Users/NONSO/Desktop/Agrobridge/agrobridge-v2/agrobridge/frontend/src/app/products/[slug]\")",
+      "Bash(mkdir -p \"/c/Users/NONSO/Desktop/Agrobridge/agrobridge-v2/agrobridge/frontend/src/app/products/[id]\")",
+      "Bash(node -e ' *)"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\NONSO\\Desktop\\Agrobridge\\agrobridge-v2\\agrobridge\\frontend\\src\\app\\products\\combos",
+      "c:\\Users\\NONSO\\Desktop\\Agrobridge\\agrobridge-v2\\agrobridge\\frontend\\src\\app\\api",
+      "C:\\Users\\NONSO\\Desktop\\Agrobridge\\agrobridge-v2\\agrobridge\\frontend\\src\\app\\orders",
+      "C:\\Users\\NONSO\\Desktop\\Agrobridge\\agrobridge-v2\\agrobridge\\frontend\\src\\app\\products"
+    ]
+  }
+}
