@@ -33,11 +33,6 @@ export default function OrderDetailPage({ params }: { params: { id: string } }) 
     const token = localStorage.getItem('accessToken')
     if (!token) { router.push('/login'); return }
     fetchOrder(token)
-
-    // Auto-verify if redirected back from Paystack
-    if (searchParams.get('verify') === '1') {
-      setTimeout(() => verifyPayment(token), 1500)
-    }
   }, [params.id])
 
   const fetchOrder = async (token: string) => {
@@ -46,14 +41,19 @@ export default function OrderDetailPage({ params }: { params: { id: string } }) 
         headers: { Authorization: `Bearer ${token}` }
       })
       if (!res.ok) { router.push('/orders'); return }
-      setOrder(await res.json())
+      const data = await res.json()
+      setOrder(data)
+      // Auto-verify after order loads if redirected back from Paystack
+      if (searchParams.get('verify') === '1') {
+        verifyPayment(token)
+      }
     } catch {}
     finally { setLoading(false) }
   }
 
   const verifyPayment = async (token?: string) => {
     const t = token || localStorage.getItem('accessToken')
-    if (!t || !order?.id) return
+    if (!t) return
     setVerifying(true)
     try {
       const res = await fetch(`${API_URL}/api/orders/${params.id}/verify_payment/`, {
