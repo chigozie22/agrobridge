@@ -5,19 +5,27 @@ from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
 from .models import User
 from apps.clusters.serializers import ClusterSerializer
+from apps.clusters.models import Cluster
 
 
 class UserSerializer(serializers.ModelSerializer):
     """Serializer for User model"""
     cluster = ClusterSerializer(read_only=True)
+    cluster_id = serializers.PrimaryKeyRelatedField(
+        queryset=Cluster.objects.all(),
+        source='cluster',
+        write_only=True,
+        required=False,
+        allow_null=True,
+    )
 
     class Meta:
         model = User
         fields = [
             'id', 'name', 'email', 'phone', 'role',
-            'cluster', 'address', 'avatar', 'date_joined'
+            'cluster', 'cluster_id', 'address', 'avatar', 'date_joined'
         ]
-        read_only_fields = ['id', 'date_joined']
+        read_only_fields = ['id', 'email', 'role', 'date_joined']
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):

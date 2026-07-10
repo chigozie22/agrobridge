@@ -114,6 +114,7 @@ export default function DashboardPage() {
               <Link href="/products" className="text-gray-700 hover:text-aj-yellow transition hidden sm:block">Browse Products</Link>
               <Link href="/orders" className="text-gray-700 hover:text-aj-yellow transition hidden sm:block">My Orders</Link>
               <Link href="/poultry-services" className="text-gray-700 hover:text-aj-yellow transition hidden sm:block">Poultry Services</Link>
+              <Link href="/profile" className="text-gray-700 hover:text-aj-yellow transition hidden sm:block">My Profile</Link>
               <Link href="/dashboard" className="text-aj-yellow font-semibold">Dashboard</Link>
               <button onClick={handleLogout} className="flex items-center gap-2 text-red-500 hover:text-red-600 font-semibold text-sm">
                 <LogOut className="w-4 h-4" /> Logout
@@ -185,6 +186,9 @@ export default function DashboardPage() {
               {user?.cluster?.name || 'No cluster yet'}
             </p>
             <p className="text-sm text-gray-600">Your Cluster</p>
+            {!user?.cluster && (
+              <Link href="/profile" className="text-xs text-aj-yellow font-semibold underline mt-1 block">Set your cluster →</Link>
+            )}
             {nextDelivery && (
               <p className="text-xs text-aj-yellow font-semibold mt-1">
                 Next delivery: {new Date(nextDelivery.scheduled_date).toLocaleDateString('en-NG', { weekday: 'short', day: 'numeric', month: 'short' })}
