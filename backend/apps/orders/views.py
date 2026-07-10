@@ -2,9 +2,9 @@ import uuid
 import requests
 from django.conf import settings
 from django.utils import timezone
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, generics
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
 from .models import Order
@@ -110,6 +110,34 @@ class OrderViewSet(viewsets.GenericViewSet):
                 return Response({'error': 'Payment not successful', 'order': OrderReadSerializer(order).data}, status=400)
         except requests.RequestException as e:
             return Response({'error': f'Could not reach Paystack: {str(e)}'}, status=503)
+
+    # PATCH /api/orders/{id}/update_status/  (admin only)
+    @action(detail=True, methods=['patch'], url_path='update_status', permission_classes=[IsAdminUser])
+    def update_status(self, request, pk=None):
+        order = Order.objects.filter(pk=pk).first()
+        if not order:
+            return Response({'error': 'Order not found'}, status=404)
+        new_status = request.data.get('status')
+        valid = [s for s, _ in Order.STATUS_CHOICES]
+        if new_status not in valid:
+            return Response({'error': f'Invalid status. Choose from: {valid}'}, status=400)
+        order.status = new_status
+        if new_status == 'CONFIRMED' and not order.confirmed_at:
+            order.confirmed_at = timezone.now()
+        order.save()
+        return Response(OrderReadSerializer(order).data)
+
+    # GET /api/orders/all/  (admin only)
+    @action(detail=False, methods=['get'], url_path='all', permission_classes=[IsAdminUser])
+    def all_orders(self, request):
+        qs = Order.objects.select_related('user', 'cluster').prefetch_related('items').order_by('-created_at')
+        cluster_id = request.query_params.get('cluster')
+        status_filter = request.query_params.get('status')
+        if cluster_id:
+            qs = qs.filter(cluster_id=cluster_id)
+        if status_filter:
+            qs = qs.filter(status=status_filter)
+        return Response(OrderReadSerializer(qs, many=True).data)
 
     # POST /api/orders/{id}/cancel/
     @action(detail=True, methods=['post'], url_path='cancel')
