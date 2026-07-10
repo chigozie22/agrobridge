@@ -287,14 +287,14 @@ export default function PoultryServicesPage() {
                     <label className="block text-sm font-semibold text-gray-700 mb-1">Full Name *</label>
                     <input required type="text" placeholder="e.g. Chigozie Okonkwo"
                       value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                      className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-aj-yellow focus:outline-none text-sm"
+                      className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-aj-yellow focus:outline-none text-sm text-gray-900"
                     />
                   </div>
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-1">Phone Number *</label>
                     <input required type="tel" placeholder="080xxxxxxxx"
                       value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
-                      className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-aj-yellow focus:outline-none text-sm"
+                      className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-aj-yellow focus:outline-none text-sm text-gray-900"
                     />
                   </div>
                 </div>
@@ -302,7 +302,7 @@ export default function PoultryServicesPage() {
                   <label className="block text-sm font-semibold text-gray-700 mb-1">Email <span className="text-gray-400 font-normal">(optional)</span></label>
                   <input type="email" placeholder="for booking confirmation"
                     value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
-                    className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-aj-yellow focus:outline-none text-sm"
+                    className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-aj-yellow focus:outline-none text-sm text-gray-900"
                   />
                 </div>
               </div>
@@ -320,7 +320,7 @@ export default function PoultryServicesPage() {
                     <label className="block text-sm font-semibold text-gray-700 mb-1">Cluster / Area *</label>
                     <select required
                       value={form.cluster} onChange={e => setForm(f => ({ ...f, cluster: e.target.value }))}
-                      className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-aj-yellow focus:outline-none text-sm bg-white"
+                      className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-aj-yellow focus:outline-none text-sm text-gray-900 bg-white"
                     >
                       <option value="">Select your area...</option>
                       {clusters.length > 0
@@ -340,7 +340,7 @@ export default function PoultryServicesPage() {
                     <label className="block text-sm font-semibold text-gray-700 mb-1">Delivery Date *</label>
                     <input required type="date" min={minDate}
                       value={form.delivery_date} onChange={e => setForm(f => ({ ...f, delivery_date: e.target.value }))}
-                      className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-aj-yellow focus:outline-none text-sm"
+                      className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-aj-yellow focus:outline-none text-sm text-gray-900"
                     />
                   </div>
                 </div>
@@ -391,7 +391,7 @@ export default function PoultryServicesPage() {
                 <label className="block text-sm font-semibold text-gray-700 mb-1">Notes <span className="text-gray-400 font-normal">(optional)</span></label>
                 <input type="text" placeholder="Gate colour, preferred delivery time, etc."
                   value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
-                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-aj-yellow focus:outline-none text-sm"
+                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-aj-yellow focus:outline-none text-sm text-gray-900"
                 />
               </div>
 

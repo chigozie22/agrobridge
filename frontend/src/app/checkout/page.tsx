@@ -181,7 +181,7 @@ export default function CheckoutPage() {
                   placeholder="Room/House number, hostel block, street name..."
                   value={form.delivery_address}
                   onChange={e => setForm(f => ({ ...f, delivery_address: e.target.value }))}
-                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-aj-yellow focus:outline-none resize-none"
+                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-aj-yellow focus:outline-none resize-none text-gray-900"
                 />
               </div>
 
@@ -195,7 +195,7 @@ export default function CheckoutPage() {
                     placeholder="080xxxxxxxx"
                     value={form.delivery_phone}
                     onChange={e => setForm(f => ({ ...f, delivery_phone: e.target.value }))}
-                    className="w-full border-2 border-gray-200 rounded-xl pl-10 pr-4 py-3 focus:border-aj-yellow focus:outline-none"
+                    className="w-full border-2 border-gray-200 rounded-xl pl-10 pr-4 py-3 focus:border-aj-yellow focus:outline-none text-gray-900"
                   />
                 </div>
               </div>
@@ -207,7 +207,7 @@ export default function CheckoutPage() {
                   placeholder="Landmark, gate colour, preferred time..."
                   value={form.delivery_notes}
                   onChange={e => setForm(f => ({ ...f, delivery_notes: e.target.value }))}
-                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-aj-yellow focus:outline-none"
+                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-aj-yellow focus:outline-none text-gray-900"
                 />
               </div>
             </div>
