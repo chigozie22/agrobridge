@@ -113,6 +113,7 @@ export default function DashboardPage() {
             <div className="flex items-center gap-4">
               <Link href="/products" className="text-gray-700 hover:text-aj-yellow transition hidden sm:block">Browse Products</Link>
               <Link href="/orders" className="text-gray-700 hover:text-aj-yellow transition hidden sm:block">My Orders</Link>
+              <Link href="/poultry-services" className="text-gray-700 hover:text-aj-yellow transition hidden sm:block">Poultry Services</Link>
               <Link href="/dashboard" className="text-aj-yellow font-semibold">Dashboard</Link>
               <button onClick={handleLogout} className="flex items-center gap-2 text-red-500 hover:text-red-600 font-semibold text-sm">
                 <LogOut className="w-4 h-4" /> Logout
@@ -301,6 +302,11 @@ export default function DashboardPage() {
                   className="flex items-center gap-3 p-4 bg-gray-100 hover:bg-gray-200 rounded-xl transition font-semibold text-gray-700"
                 >
                   <Settings className="w-5 h-5" /> Food Bundles
+                </Link>
+                <Link href="/poultry-services"
+                  className="flex items-center gap-3 p-4 bg-gray-100 hover:bg-gray-200 rounded-xl transition font-semibold text-gray-700"
+                >
+                  <Package className="w-5 h-5" /> Poultry Services
                 </Link>
               </div>
             </div>
