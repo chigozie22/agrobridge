@@ -12,10 +12,7 @@ python manage.py shell -c "
 from apps.users.models import User
 email = 'trentjoshuaeee@gmail.com'
 u = User.objects.filter(email=email).first()
-if not u:
-    u = User.objects.create_superuser(email=email, password='Admin@Agrobridge1', name='Chigozie')
-    print('Superuser created:', email)
-else:
+if u and not u.is_superuser:
     u.is_staff = True
     u.is_superuser = True
     u.save()
