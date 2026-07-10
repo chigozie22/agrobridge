@@ -36,7 +36,10 @@ export default function CheckoutPage() {
         headers: { Authorization: `Bearer ${token}` }
       })
       const data = await res.json()
-      if (data.cluster) setCluster(data.cluster)
+      if (data.cluster && typeof data.cluster === 'object') {
+        setCluster(data.cluster)
+      }
+      if (data.phone) setForm(f => ({ ...f, delivery_phone: f.delivery_phone || data.phone }))
     } catch {}
   }
 

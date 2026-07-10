@@ -4,10 +4,12 @@ Serializers for User model
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
 from .models import User
+from apps.clusters.serializers import ClusterSerializer
 
 
 class UserSerializer(serializers.ModelSerializer):
     """Serializer for User model"""
+    cluster = ClusterSerializer(read_only=True)
 
     class Meta:
         model = User
