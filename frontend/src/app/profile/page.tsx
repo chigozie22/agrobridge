@@ -136,6 +136,7 @@ export default function ProfilePage() {
           </Link>
           <div className="flex items-center gap-4">
             <Link href="/dashboard" className="text-gray-600 hover:text-aj-yellow text-sm font-semibold">Dashboard</Link>
+            <Link href="/ai-planner" className="text-gray-600 hover:text-aj-yellow text-sm font-semibold">AI Planner</Link>
             <button onClick={handleLogout} className="flex items-center gap-2 text-red-500 hover:text-red-600 text-sm font-semibold">
               <LogOut className="w-4 h-4" /> Logout
             </button>

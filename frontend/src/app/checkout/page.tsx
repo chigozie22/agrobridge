@@ -132,9 +132,12 @@ export default function CheckoutPage() {
           <Link href="/" className="text-2xl font-bold">
             <span className="text-gray-900">Agro</span><span className="text-aj-yellow">Bridge</span>
           </Link>
-          <Link href="/products" className="flex items-center gap-2 text-gray-600 hover:text-aj-yellow">
-            <ShoppingCart className="w-4 h-4" /> Cart ({itemCount})
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link href="/ai-planner" className="text-gray-600 hover:text-aj-yellow">AI Planner</Link>
+            <Link href="/products" className="flex items-center gap-2 text-gray-600 hover:text-aj-yellow">
+              <ShoppingCart className="w-4 h-4" /> Cart ({itemCount})
+            </Link>
+          </div>
         </div>
       </nav>
 

@@ -13,6 +13,7 @@ export default function AboutPage() {
           <div className="flex items-center gap-6">
             <Link href="/products" className="text-gray-700 hover:text-aj-yellow text-sm font-semibold transition">Products</Link>
             <Link href="/clusters" className="text-gray-700 hover:text-aj-yellow text-sm font-semibold transition">Clusters</Link>
+            <Link href="/ai-planner" className="text-gray-700 hover:text-aj-yellow text-sm font-semibold transition">AI Planner</Link>
             <Link href="/login" className="text-gray-700 hover:text-aj-yellow text-sm font-semibold transition">Login</Link>
             <Link href="/signup" className="bg-aj-yellow text-gray-900 px-4 py-2 rounded-lg text-sm font-bold hover:bg-yellow-400 transition">Sign Up</Link>
           </div>
@@ -70,7 +71,7 @@ export default function AboutPage() {
             {[
               { step: '1', title: 'Join a Cluster', desc: 'Sign up and pick the buying group nearest to where you live.' },
               { step: '2', title: 'Place Your Order', desc: 'Browse products and combos. Add what you need to your cart.' },
-              { step: '3', title: 'We Aggregate', desc: 'Your order is combined with your cluster's orders for bulk pricing.' },
+              { step: '3', title: 'We Aggregate', desc: "Your order is combined with your cluster's orders for bulk pricing." },
               { step: '4', title: 'Get Delivered', desc: 'One delivery to your cluster — low fee, shared cost.' },
             ].map(({ step, title, desc }) => (
               <div key={step} className="text-center">

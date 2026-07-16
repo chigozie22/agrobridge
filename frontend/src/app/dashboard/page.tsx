@@ -115,6 +115,7 @@ export default function DashboardPage() {
               <Link href="/orders" className="text-gray-700 hover:text-aj-yellow transition hidden sm:block">My Orders</Link>
               <Link href="/poultry-services" className="text-gray-700 hover:text-aj-yellow transition hidden sm:block">Poultry Services</Link>
               <Link href="/profile" className="text-gray-700 hover:text-aj-yellow transition hidden sm:block">My Profile</Link>
+              <Link href="/ai-planner" className="text-gray-700 hover:text-aj-yellow transition hidden sm:block">AI Planner</Link>
               <Link href="/dashboard" className="text-aj-yellow font-semibold">Dashboard</Link>
               <button onClick={handleLogout} className="flex items-center gap-2 text-red-500 hover:text-red-600 font-semibold text-sm">
                 <LogOut className="w-4 h-4" /> Logout

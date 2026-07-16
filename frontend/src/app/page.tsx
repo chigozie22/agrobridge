@@ -71,6 +71,9 @@ export default function Home() {
                   <a href="/dashboard" className="text-gray-700 hover:text-aj-yellow transition font-semibold">
                     Dashboard
                   </a>
+                  <a href="/ai-planner" className="text-gray-700 hover:text-aj-yellow transition font-semibold">
+                    AI Planner
+                  </a>
                   <div className="bg-aj-yellow text-aj-dark px-4 py-2 rounded-full font-semibold">
                     Cart (0)
                   </div>

@@ -99,6 +99,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
           </Link>
           <div className="flex items-center gap-4">
             <Link href="/products" className="text-gray-600 hover:text-aj-yellow hidden sm:block">Products</Link>
+            <Link href="/ai-planner" className="text-gray-600 hover:text-aj-yellow hidden sm:block">AI Planner</Link>
             <Link href="/products" className="bg-aj-yellow text-aj-dark px-4 py-2 rounded-lg font-bold text-sm">
               🛒 Cart ({itemCount})
             </Link>

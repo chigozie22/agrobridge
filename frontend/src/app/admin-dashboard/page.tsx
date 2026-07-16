@@ -119,6 +119,7 @@ export default function AdminDashboardPage() {
           </div>
           <div className="flex items-center gap-4">
             <Link href="/dashboard" className="text-gray-300 hover:text-white text-sm">User Dashboard</Link>
+            <Link href="/ai-planner" className="text-gray-300 hover:text-white text-sm">AI Planner</Link>
             <button onClick={handleLogout} className="flex items-center gap-2 text-red-400 hover:text-red-300 text-sm font-semibold">
               <LogOut className="w-4 h-4" /> Logout
             </button>

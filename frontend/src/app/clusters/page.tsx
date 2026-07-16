@@ -29,6 +29,7 @@ export default function ClustersPage() {
           <div className="flex items-center gap-6">
             <Link href="/products" className="text-gray-700 hover:text-aj-yellow text-sm font-semibold transition">Products</Link>
             <Link href="/poultry-services" className="text-gray-700 hover:text-aj-yellow text-sm font-semibold transition">Poultry Services</Link>
+            <Link href="/ai-planner" className="text-gray-700 hover:text-aj-yellow text-sm font-semibold transition">AI Planner</Link>
             <Link href="/login" className="text-gray-700 hover:text-aj-yellow text-sm font-semibold transition">Login</Link>
             <Link href="/signup" className="bg-aj-yellow text-gray-900 px-4 py-2 rounded-lg text-sm font-bold hover:bg-yellow-400 transition">Sign Up</Link>
           </div>

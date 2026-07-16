@@ -234,6 +234,7 @@ export default function ProductsPage() {
               <Link href="/products" className="text-aj-yellow font-semibold">Products</Link>
               <Link href="/orders" className="text-gray-700 hover:text-aj-yellow transition hidden sm:block">My Orders</Link>
               <Link href="/dashboard" className="text-gray-700 hover:text-aj-yellow transition hidden sm:block">Dashboard</Link>
+              <Link href="/ai-planner" className="text-gray-700 hover:text-aj-yellow transition hidden sm:block">AI Planner</Link>
               <button
                 onClick={() => setCartOpen(o => !o)}
                 className="relative bg-aj-yellow text-aj-dark px-4 py-2 rounded-lg font-bold hover:bg-yellow-400 transition flex items-center gap-2"

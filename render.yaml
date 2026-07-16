@@ -26,6 +26,7 @@ services:
       # Add these manually in the Render dashboard (do not commit real keys):
       # - key: PAYSTACK_SECRET_KEY
       # - key: PAYSTACK_PUBLIC_KEY
+      # - key: CLAUDE_API_KEY
 
 databases:
   - name: agrobridge-db

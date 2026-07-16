@@ -135,6 +135,7 @@ export default function ComboDetailPage({ params }: { params: { slug: string } }
             <div className="flex items-center gap-4">
               <Link href="/products" className="text-gray-700 hover:text-aj-yellow transition">Products</Link>
               <Link href="/dashboard" className="text-gray-700 hover:text-aj-yellow transition">Dashboard</Link>
+              <Link href="/ai-planner" className="text-gray-700 hover:text-aj-yellow transition">AI Planner</Link>
               <Link href="/products" className="bg-aj-yellow text-aj-dark px-4 py-2 rounded-lg font-bold cursor-pointer hover:bg-yellow-400 transition">
                 Cart ({itemCount})
               </Link>

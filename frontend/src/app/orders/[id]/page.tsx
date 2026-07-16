@@ -114,7 +114,10 @@ export default function OrderDetailPage({ params }: { params: { id: string } }) 
           <Link href="/" className="text-2xl font-bold">
             <span className="text-gray-900">Agro</span><span className="text-aj-yellow">Bridge</span>
           </Link>
-          <Link href="/orders" className="text-gray-600 hover:text-aj-yellow text-sm font-semibold">My Orders</Link>
+          <div className="flex items-center gap-4">
+            <Link href="/orders" className="text-gray-600 hover:text-aj-yellow text-sm font-semibold">My Orders</Link>
+            <Link href="/ai-planner" className="text-gray-600 hover:text-aj-yellow text-sm font-semibold">AI Planner</Link>
+          </div>
         </div>
       </nav>
 

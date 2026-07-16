@@ -50,6 +50,7 @@ export default function OrdersPage() {
           <div className="flex items-center gap-4">
             <Link href="/products" className="text-gray-600 hover:text-aj-yellow">Shop</Link>
             <Link href="/dashboard" className="text-gray-600 hover:text-aj-yellow">Dashboard</Link>
+            <Link href="/ai-planner" className="text-gray-600 hover:text-aj-yellow">AI Planner</Link>
           </div>
         </div>
       </nav>

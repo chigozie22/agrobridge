@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'apps.orders',
     'apps.deliveries',
     'apps.poultry',
+    'apps.planner',
 ]
 
 MIDDLEWARE = [
@@ -136,6 +137,9 @@ REST_FRAMEWORK = {
         'rest_framework.filters.OrderingFilter',
     ],
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_THROTTLE_RATES': {
+        'planner': '15/day',
+    },
 }
 
 # JWT Settings
@@ -197,6 +201,9 @@ else:
 PAYSTACK_SECRET_KEY = config('PAYSTACK_SECRET_KEY', default='')
 PAYSTACK_PUBLIC_KEY = config('PAYSTACK_PUBLIC_KEY', default='')
 FRONTEND_URL = config('FRONTEND_URL', default='http://localhost:3000')
+
+# AI Food Planner (Claude API)
+CLAUDE_API_KEY = config('CLAUDE_API_KEY', default='')
 
 # Email (Gmail SMTP)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
