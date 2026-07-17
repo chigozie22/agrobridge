@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Package, ChevronRight, Clock, CheckCircle, Truck, XCircle, AlertCircle } from 'lucide-react'
+import Navbar from '@/components/Navbar'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 
@@ -42,18 +43,13 @@ export default function OrdersPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/" className="text-2xl font-bold">
-            <span className="text-gray-900">Agro</span><span className="text-aj-yellow">Bridge</span>
-          </Link>
-          <div className="flex items-center gap-4">
-            <Link href="/products" className="text-gray-600 hover:text-aj-yellow">Shop</Link>
-            <Link href="/dashboard" className="text-gray-600 hover:text-aj-yellow">Dashboard</Link>
-            <Link href="/ai-planner" className="text-gray-600 hover:text-aj-yellow">AI Planner</Link>
-          </div>
-        </div>
-      </nav>
+      <Navbar
+        links={[
+          { href: '/products', label: 'Shop' },
+          { href: '/dashboard', label: 'Dashboard' },
+          { href: '/ai-planner', label: 'AI Planner' },
+        ]}
+      />
 
       <div className="max-w-3xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-8">

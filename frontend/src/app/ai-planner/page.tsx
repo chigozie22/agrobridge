@@ -7,6 +7,7 @@ import {
   Sparkles, ChefHat, ShoppingBasket, Wallet, Clock, Lightbulb,
   AlertCircle, RotateCcw, ArrowRight, Loader2,
 } from 'lucide-react'
+import Navbar from '@/components/Navbar'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 
@@ -144,29 +145,21 @@ export default function AIPlannerPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Nav */}
-      <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <Link href="/" className="text-2xl font-bold">
-              <span className="text-gray-900">Agro</span><span className="text-aj-yellow">Bridge</span>
-            </Link>
-            <div className="flex items-center gap-4">
-              <Link href="/" className="text-gray-700 hover:text-aj-yellow transition hidden sm:block">Home</Link>
-              <Link href="/products" className="text-gray-700 hover:text-aj-yellow transition hidden sm:block">Products</Link>
-              <Link href="/orders" className="text-gray-700 hover:text-aj-yellow transition hidden sm:block">My Orders</Link>
-              <Link href="/dashboard" className="text-gray-700 hover:text-aj-yellow transition hidden sm:block">Dashboard</Link>
-              <Link href="/ai-planner" className="text-aj-yellow font-semibold">AI Planner</Link>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Navbar
+        links={[
+          { href: '/', label: 'Home' },
+          { href: '/products', label: 'Products' },
+          { href: '/orders', label: 'My Orders' },
+          { href: '/dashboard', label: 'Dashboard' },
+          { href: '/ai-planner', label: 'AI Planner', active: true },
+        ]}
+      />
 
       <div className="max-w-5xl mx-auto px-4 py-10">
         {/* Hero + explainer */}
         <div className="text-center mb-10">
-          <span className="inline-flex items-center gap-1.5 bg-yellow-50 text-aj-yellow border border-yellow-200 rounded-full px-3 py-1 text-xs font-bold mb-4">
-            <Sparkles className="w-3.5 h-3.5" /> NEW — AI FOOD PLANNING ENGINE
+          <span className="inline-flex items-center gap-2.5 bg-yellow-50 text-aj-yellow border-2 border-aj-yellow rounded-full px-6 py-2.5 text-lg font-extrabold tracking-wide mb-5 shadow-sm">
+            <Sparkles className="w-6 h-6" /> NEW — AI FOOD PLANNING ENGINE
           </span>
           <h1 className="text-4xl sm:text-5xl font-extrabold text-aj-green mb-4">
             Tell us who you're feeding. We'll plan the rest.

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { MapPin, Users, Truck, ArrowRight } from 'lucide-react'
+import Navbar from '@/components/Navbar'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 
@@ -20,21 +21,19 @@ export default function ClustersPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Nav */}
-      <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/" className="text-2xl font-bold">
-            <span className="text-gray-900">Agro</span><span className="text-aj-yellow">Bridge</span>
-          </Link>
-          <div className="flex items-center gap-6">
-            <Link href="/products" className="text-gray-700 hover:text-aj-yellow text-sm font-semibold transition">Products</Link>
-            <Link href="/poultry-services" className="text-gray-700 hover:text-aj-yellow text-sm font-semibold transition">Poultry Services</Link>
-            <Link href="/ai-planner" className="text-gray-700 hover:text-aj-yellow text-sm font-semibold transition">AI Planner</Link>
+      <Navbar
+        links={[
+          { href: '/products', label: 'Products' },
+          { href: '/poultry-services', label: 'Poultry Services' },
+          { href: '/ai-planner', label: 'AI Planner' },
+        ]}
+        rightSlot={
+          <>
             <Link href="/login" className="text-gray-700 hover:text-aj-yellow text-sm font-semibold transition">Login</Link>
             <Link href="/signup" className="bg-aj-yellow text-gray-900 px-4 py-2 rounded-lg text-sm font-bold hover:bg-yellow-400 transition">Sign Up</Link>
-          </div>
-        </div>
-      </nav>
+          </>
+        }
+      />
 
       {/* Hero */}
       <section className="bg-gradient-to-br from-aj-green to-green-800 text-white py-16 px-4">

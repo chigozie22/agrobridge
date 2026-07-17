@@ -1,24 +1,23 @@
 import Link from 'next/link'
 import { ArrowRight, Users, ShoppingBag, Truck, TrendingDown } from 'lucide-react'
+import Navbar from '@/components/Navbar'
 
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-white">
-      {/* Nav */}
-      <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/" className="text-2xl font-bold">
-            <span className="text-gray-900">Agro</span><span className="text-aj-yellow">Bridge</span>
-          </Link>
-          <div className="flex items-center gap-6">
-            <Link href="/products" className="text-gray-700 hover:text-aj-yellow text-sm font-semibold transition">Products</Link>
-            <Link href="/clusters" className="text-gray-700 hover:text-aj-yellow text-sm font-semibold transition">Clusters</Link>
-            <Link href="/ai-planner" className="text-gray-700 hover:text-aj-yellow text-sm font-semibold transition">AI Planner</Link>
+      <Navbar
+        links={[
+          { href: '/products', label: 'Products' },
+          { href: '/clusters', label: 'Clusters' },
+          { href: '/ai-planner', label: 'AI Planner' },
+        ]}
+        rightSlot={
+          <>
             <Link href="/login" className="text-gray-700 hover:text-aj-yellow text-sm font-semibold transition">Login</Link>
             <Link href="/signup" className="bg-aj-yellow text-gray-900 px-4 py-2 rounded-lg text-sm font-bold hover:bg-yellow-400 transition">Sign Up</Link>
-          </div>
-        </div>
-      </nav>
+          </>
+        }
+      />
 
       {/* Hero */}
       <section className="bg-gradient-to-br from-gray-900 to-aj-green text-white py-20 px-4">

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, ShoppingCart, MapPin, Phone, Truck, CheckCircle, AlertCircle } from 'lucide-react'
 import { useCart } from '@/context/CartContext'
+import Navbar from '@/components/Navbar'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 
@@ -126,20 +127,14 @@ export default function CheckoutPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Nav */}
-      <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/" className="text-2xl font-bold">
-            <span className="text-gray-900">Agro</span><span className="text-aj-yellow">Bridge</span>
+      <Navbar
+        links={[{ href: '/ai-planner', label: 'AI Planner' }]}
+        rightSlot={
+          <Link href="/products" className="flex items-center gap-2 text-gray-600 hover:text-aj-yellow text-sm font-medium">
+            <ShoppingCart className="w-4 h-4" /> Cart ({itemCount})
           </Link>
-          <div className="flex items-center gap-4">
-            <Link href="/ai-planner" className="text-gray-600 hover:text-aj-yellow">AI Planner</Link>
-            <Link href="/products" className="flex items-center gap-2 text-gray-600 hover:text-aj-yellow">
-              <ShoppingCart className="w-4 h-4" /> Cart ({itemCount})
-            </Link>
-          </div>
-        </div>
-      </nav>
+        }
+      />
 
       <div className="max-w-5xl mx-auto px-4 py-8">
         <Link href="/products" className="inline-flex items-center gap-2 text-gray-600 hover:text-aj-yellow mb-6 transition">

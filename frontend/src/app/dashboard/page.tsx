@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { ShoppingBag, TrendingDown, MapPin, Calendar, Package, LogOut, User, Settings, ChevronRight, Clock, CheckCircle, Truck, XCircle, AlertCircle } from 'lucide-react'
+import Navbar from '@/components/Navbar'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 
@@ -103,27 +104,21 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Nav */}
-      <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <Link href="/" className="text-2xl font-bold">
-              <span className="text-gray-900">Agro</span><span className="text-aj-yellow">Bridge</span>
-            </Link>
-            <div className="flex items-center gap-4">
-              <Link href="/products" className="text-gray-700 hover:text-aj-yellow transition hidden sm:block">Browse Products</Link>
-              <Link href="/orders" className="text-gray-700 hover:text-aj-yellow transition hidden sm:block">My Orders</Link>
-              <Link href="/poultry-services" className="text-gray-700 hover:text-aj-yellow transition hidden sm:block">Poultry Services</Link>
-              <Link href="/profile" className="text-gray-700 hover:text-aj-yellow transition hidden sm:block">My Profile</Link>
-              <Link href="/ai-planner" className="text-gray-700 hover:text-aj-yellow transition hidden sm:block">AI Planner</Link>
-              <Link href="/dashboard" className="text-aj-yellow font-semibold">Dashboard</Link>
-              <button onClick={handleLogout} className="flex items-center gap-2 text-red-500 hover:text-red-600 font-semibold text-sm">
-                <LogOut className="w-4 h-4" /> Logout
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Navbar
+        links={[
+          { href: '/products', label: 'Browse Products' },
+          { href: '/orders', label: 'My Orders' },
+          { href: '/poultry-services', label: 'Poultry Services' },
+          { href: '/profile', label: 'My Profile' },
+          { href: '/ai-planner', label: 'AI Planner' },
+          { href: '/dashboard', label: 'Dashboard', active: true },
+        ]}
+        rightSlot={
+          <button onClick={handleLogout} className="flex items-center gap-2 text-red-500 hover:text-red-600 font-semibold text-sm">
+            <LogOut className="w-4 h-4" /> Logout
+          </button>
+        }
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 

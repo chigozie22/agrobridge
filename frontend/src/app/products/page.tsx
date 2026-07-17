@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { ArrowLeft, Sparkles, TrendingUp, Users, ShoppingCart, Plus, Minus, X } from 'lucide-react'
 import { useCart } from '@/context/CartContext'
+import Navbar from '@/components/Navbar'
 
 interface Category {
   id: number
@@ -222,35 +223,29 @@ export default function ProductsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* ── Navigation ──────────────────────────────────────── */}
-      <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <Link href="/" className="text-2xl font-bold">
-              <span className="text-gray-900">Agro</span><span className="text-aj-yellow">Bridge</span>
-            </Link>
-            <div className="flex items-center gap-4">
-              <Link href="/" className="text-gray-700 hover:text-aj-yellow transition hidden sm:block">Home</Link>
-              <Link href="/products" className="text-aj-yellow font-semibold">Products</Link>
-              <Link href="/orders" className="text-gray-700 hover:text-aj-yellow transition hidden sm:block">My Orders</Link>
-              <Link href="/dashboard" className="text-gray-700 hover:text-aj-yellow transition hidden sm:block">Dashboard</Link>
-              <Link href="/ai-planner" className="text-gray-700 hover:text-aj-yellow transition hidden sm:block">AI Planner</Link>
-              <button
-                onClick={() => setCartOpen(o => !o)}
-                className="relative bg-aj-yellow text-aj-dark px-4 py-2 rounded-lg font-bold hover:bg-yellow-400 transition flex items-center gap-2"
-              >
-                <ShoppingCart className="w-4 h-4" />
-                Cart ({itemCount})
-                {itemCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                    {itemCount}
-                  </span>
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Navbar
+        links={[
+          { href: '/', label: 'Home' },
+          { href: '/products', label: 'Products', active: true },
+          { href: '/orders', label: 'My Orders' },
+          { href: '/dashboard', label: 'Dashboard' },
+          { href: '/ai-planner', label: 'AI Planner' },
+        ]}
+        rightSlot={
+          <button
+            onClick={() => setCartOpen(o => !o)}
+            className="relative bg-aj-yellow text-aj-dark px-4 py-2 rounded-lg font-bold hover:bg-yellow-400 transition flex items-center gap-2"
+          >
+            <ShoppingCart className="w-4 h-4" />
+            Cart ({itemCount})
+            {itemCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                {itemCount}
+              </span>
+            )}
+          </button>
+        }
+      />
 
       {/* ── Cart Drawer ──────────────────────────────────────── */}
       {cartOpen && (

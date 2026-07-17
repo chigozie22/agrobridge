@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { ArrowLeft, Package, MapPin, Phone, Truck, CheckCircle, Clock, XCircle, AlertCircle, RefreshCw } from 'lucide-react'
+import Navbar from '@/components/Navbar'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 
@@ -109,17 +110,12 @@ export default function OrderDetailPage({ params }: { params: { id: string } }) 
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/" className="text-2xl font-bold">
-            <span className="text-gray-900">Agro</span><span className="text-aj-yellow">Bridge</span>
-          </Link>
-          <div className="flex items-center gap-4">
-            <Link href="/orders" className="text-gray-600 hover:text-aj-yellow text-sm font-semibold">My Orders</Link>
-            <Link href="/ai-planner" className="text-gray-600 hover:text-aj-yellow text-sm font-semibold">AI Planner</Link>
-          </div>
-        </div>
-      </nav>
+      <Navbar
+        links={[
+          { href: '/orders', label: 'My Orders' },
+          { href: '/ai-planner', label: 'AI Planner' },
+        ]}
+      />
 
       <div className="max-w-3xl mx-auto px-4 py-8">
         <Link href="/orders" className="inline-flex items-center gap-2 text-gray-600 hover:text-aj-yellow mb-6 transition">

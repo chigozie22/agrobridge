@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { ArrowLeft, User, Phone, MapPin, Lock, CheckCircle, AlertCircle, LogOut, ChevronDown } from 'lucide-react'
+import Navbar from '@/components/Navbar'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 
@@ -128,21 +129,17 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Nav */}
-      <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/" className="text-2xl font-bold">
-            <span className="text-gray-900">Agro</span><span className="text-aj-yellow">Bridge</span>
-          </Link>
-          <div className="flex items-center gap-4">
-            <Link href="/dashboard" className="text-gray-600 hover:text-aj-yellow text-sm font-semibold">Dashboard</Link>
-            <Link href="/ai-planner" className="text-gray-600 hover:text-aj-yellow text-sm font-semibold">AI Planner</Link>
-            <button onClick={handleLogout} className="flex items-center gap-2 text-red-500 hover:text-red-600 text-sm font-semibold">
-              <LogOut className="w-4 h-4" /> Logout
-            </button>
-          </div>
-        </div>
-      </nav>
+      <Navbar
+        links={[
+          { href: '/dashboard', label: 'Dashboard' },
+          { href: '/ai-planner', label: 'AI Planner' },
+        ]}
+        rightSlot={
+          <button onClick={handleLogout} className="flex items-center gap-2 text-red-500 hover:text-red-600 text-sm font-semibold">
+            <LogOut className="w-4 h-4" /> Logout
+          </button>
+        }
+      />
 
       <div className="max-w-2xl mx-auto px-4 py-8">
         <Link href="/dashboard" className="inline-flex items-center gap-2 text-gray-600 hover:text-aj-yellow mb-6 transition">

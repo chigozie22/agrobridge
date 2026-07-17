@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { ArrowLeft, ShoppingCart, Clock, Users, UtensilsCrossed, Package } from 'lucide-react'
 import { useCart } from '@/context/CartContext'
+import Navbar from '@/components/Navbar'
 
 interface ComboItem {
   id: number
@@ -124,25 +125,18 @@ export default function ComboDetailPage({ params }: { params: { slug: string } }
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Navigation */}
-      <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <Link href="/" className="text-2xl font-bold">
-              <span className="text-gray-900">Agro</span>
-              <span className="text-aj-yellow">Bridge</span>
-            </Link>
-            <div className="flex items-center gap-4">
-              <Link href="/products" className="text-gray-700 hover:text-aj-yellow transition">Products</Link>
-              <Link href="/dashboard" className="text-gray-700 hover:text-aj-yellow transition">Dashboard</Link>
-              <Link href="/ai-planner" className="text-gray-700 hover:text-aj-yellow transition">AI Planner</Link>
-              <Link href="/products" className="bg-aj-yellow text-aj-dark px-4 py-2 rounded-lg font-bold cursor-pointer hover:bg-yellow-400 transition">
-                Cart ({itemCount})
-              </Link>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Navbar
+        links={[
+          { href: '/products', label: 'Products' },
+          { href: '/dashboard', label: 'Dashboard' },
+          { href: '/ai-planner', label: 'AI Planner' },
+        ]}
+        rightSlot={
+          <Link href="/products" className="bg-aj-yellow text-aj-dark px-4 py-2 rounded-lg font-bold cursor-pointer hover:bg-yellow-400 transition">
+            Cart ({itemCount})
+          </Link>
+        }
+      />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Back link */}
