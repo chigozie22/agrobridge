@@ -30,6 +30,13 @@ class Order(models.Model):
     id = models.BigAutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
     cluster = models.ForeignKey(Cluster, on_delete=models.SET_NULL, null=True, related_name='orders')
+    aggregation_run = models.ForeignKey(
+        'aggregation.AggregationRun',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='orders',
+    )
 
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='PENDING')
     total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)

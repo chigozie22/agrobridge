@@ -162,7 +162,7 @@ class PriceOptimization(models.Model):
         ]
     
     def __str__(self):
-        return f"{self.product.name} - {self.selected_vendor.business_name}: ₦{self.selected_price}"
+        return f"{self.product.name} - {self.selected_vendor.name}: ₦{self.selected_price}"
     
     def calculate_savings(self):
         """Calculate savings compared to market average"""
@@ -217,4 +217,4 @@ class VendorAllocation(models.Model):
         unique_together = ['aggregation_run', 'vendor']
     
     def __str__(self):
-        return f"{self.vendor.business_name} - Run {self.aggregation_run.run_number}: ₦{self.total_value}"
+        return f"{self.vendor.name} - Run {self.aggregation_run.run_number}: ₦{self.total_value}"

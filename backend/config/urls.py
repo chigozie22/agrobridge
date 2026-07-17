@@ -20,6 +20,7 @@ urlpatterns = [
     path('api/clusters/', include('apps.clusters.urls')),
     path('api/products/', include('apps.products.urls')),
     path('api/vendors/', include('apps.vendors.urls')),
+    path('api/aggregation/', include('apps.aggregation.urls')),
     path('api/orders/', include('apps.orders.urls')),
     path('api/deliveries/', include('apps.deliveries.urls')),
     path('api/poultry/', include('apps.poultry.urls')),

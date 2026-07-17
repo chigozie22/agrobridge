@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'apps.clusters',
     'apps.products',
     'apps.vendors',
+    'apps.aggregation',
     'apps.orders',
     'apps.deliveries',
     'apps.poultry',
