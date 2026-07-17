@@ -168,7 +168,7 @@ export default function AIPlannerPage() {
           <span className="inline-flex items-center gap-1.5 bg-yellow-50 text-aj-yellow border border-yellow-200 rounded-full px-3 py-1 text-xs font-bold mb-4">
             <Sparkles className="w-3.5 h-3.5" /> NEW — AI FOOD PLANNING ENGINE
           </span>
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-aj-green mb-4">
             Tell us who you're feeding. We'll plan the rest.
           </h1>
           <p className="max-w-2xl mx-auto text-gray-600 leading-relaxed">
