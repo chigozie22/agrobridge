@@ -160,7 +160,7 @@ export default function ComboDetailPage({ params }: { params: { slug: string } }
             </div>
           </div>
 
-          <div className="p-8">
+          <div className="p-4 sm:p-8">
             {/* Stats Row */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
               <div className="text-center bg-gray-50 rounded-xl p-4">

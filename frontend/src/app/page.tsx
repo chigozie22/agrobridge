@@ -1,7 +1,9 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import { Truck, Leaf, Package, MapPin, Star, ChevronRight } from 'lucide-react'
+import Navbar from '@/components/Navbar'
 
 const clusters = [
   { id: 1, name: 'FUTO - Owerri',       location: 'Imo State',   users: 512, delivery_fee: 300,  next_delivery: 'Tue & Fri' },
@@ -48,53 +50,42 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Navigation */}
-      <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <h1 className="text-2xl font-bold">
-                <span className="text-aj-dark">Agro</span>
-                <span className="text-aj-yellow">Bridge</span>
-              </h1>
-            </div>
-            <div className="hidden md:flex items-center space-x-8">
-              <a href="#home" className="text-gray-700 hover:text-aj-yellow transition">Home</a>
-              <a href="/clusters" className="text-gray-700 hover:text-aj-yellow transition">Clusters</a>
-              <a href="/products" className="text-gray-700 hover:text-aj-yellow transition">Products</a>
-              <a href="/poultry-services" className="text-gray-700 hover:text-aj-yellow transition flex items-center gap-1">
-                🥚 Poultry Services
-              </a>
-              <a href="/about" className="text-gray-700 hover:text-aj-yellow transition">About Us</a>
-              {user ? (
-                <>
-                  <a href="/dashboard" className="text-gray-700 hover:text-aj-yellow transition font-semibold">
-                    Dashboard
-                  </a>
-                  <a href="/ai-planner" className="text-gray-700 hover:text-aj-yellow transition font-semibold">
-                    AI Planner
-                  </a>
-                  <div className="bg-aj-yellow text-aj-dark px-4 py-2 rounded-full font-semibold">
-                    Cart (0)
-                  </div>
-                </>
-              ) : (
-                <>
-                  <a href="/login" className="text-gray-700 hover:text-aj-yellow transition font-semibold">
-                    Login
-                  </a>
-                  <a 
-                    href="/signup"
-                    className="bg-aj-yellow text-aj-dark px-6 py-2 rounded-full font-semibold hover:bg-yellow-400 transition"
-                  >
-                    Sign Up
-                  </a>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Navbar
+        links={[
+          { href: '#home', label: 'Home' },
+          { href: '/clusters', label: 'Clusters' },
+          { href: '/products', label: 'Products' },
+          { href: '/poultry-services', label: '🥚 Poultry Services' },
+          { href: '/about', label: 'About Us' },
+        ]}
+        rightSlot={
+          user ? (
+            <>
+              <Link href="/dashboard" className="text-gray-700 hover:text-aj-yellow transition font-semibold text-sm hidden sm:block">
+                Dashboard
+              </Link>
+              <Link href="/ai-planner" className="text-gray-700 hover:text-aj-yellow transition font-semibold text-sm hidden sm:block">
+                AI Planner
+              </Link>
+              <div className="bg-aj-yellow text-aj-dark px-4 py-2 rounded-full font-semibold text-sm">
+                Cart (0)
+              </div>
+            </>
+          ) : (
+            <>
+              <Link href="/login" className="text-gray-700 hover:text-aj-yellow transition font-semibold text-sm">
+                Login
+              </Link>
+              <Link
+                href="/signup"
+                className="bg-aj-yellow text-aj-dark px-4 sm:px-6 py-2 rounded-full font-semibold text-sm hover:bg-yellow-400 transition"
+              >
+                Sign Up
+              </Link>
+            </>
+          )
+        }
+      />
 
       {/* Hero Section */}
       <section id="home" className="bg-gradient-to-br from-orange-50 to-yellow-50 pt-20 pb-32">
@@ -102,7 +93,7 @@ export default function Home() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left Content */}
             <div>
-              <h2 className="text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+              <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
                 <span className="text-aj-yellow">Smart</span> and{' '}
                 <span className="text-aj-yellow">Affordable</span>
                 <br />
@@ -130,7 +121,7 @@ export default function Home() {
               </div>
 
               {/* Features */}
-              <div className="grid grid-cols-3 gap-4 mt-12">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-12">
                 <div className="text-center p-4 bg-white rounded-xl shadow-sm">
                   <Truck className="w-8 h-8 text-aj-yellow mx-auto mb-2" />
                   <p className="font-semibold text-gray-900 text-sm">Fast Delivery</p>
@@ -151,13 +142,13 @@ export default function Home() {
 
             {/* Right Content - Placeholder for food image */}
             <div className="relative">
-              <div className="bg-gradient-to-br from-aj-yellow to-orange-300 rounded-3xl p-12 shadow-2xl">
+              <div className="bg-gradient-to-br from-aj-yellow to-orange-300 rounded-3xl p-6 sm:p-12 shadow-2xl">
                 <div className="text-center">
-                  <div className="text-9xl mb-4">🥘</div>
+                  <div className="text-6xl sm:text-9xl mb-4">🥘</div>
                   <div className="grid grid-cols-3 gap-4 mt-8">
-                    <div className="text-6xl">🍅</div>
-                    <div className="text-6xl">🌾</div>
-                    <div className="text-6xl">🥬</div>
+                    <div className="text-4xl sm:text-6xl">🍅</div>
+                    <div className="text-4xl sm:text-6xl">🌾</div>
+                    <div className="text-4xl sm:text-6xl">🥬</div>
                   </div>
                 </div>
               </div>

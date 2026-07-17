@@ -105,7 +105,7 @@ export default function PoultryServicesPage() {
   if (success) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
-        <div className="max-w-md w-full bg-white rounded-3xl shadow-xl p-10 text-center">
+        <div className="max-w-md w-full bg-white rounded-3xl shadow-xl p-6 sm:p-10 text-center">
           <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <CheckCircle className="w-10 h-10 text-green-500" />
           </div>
@@ -273,7 +273,7 @@ export default function PoultryServicesPage() {
           <div className="grid lg:grid-cols-5 gap-8">
 
             {/* Form */}
-            <form onSubmit={handleSubmit} className="lg:col-span-3 space-y-5 bg-white rounded-2xl shadow-lg p-8">
+            <form onSubmit={handleSubmit} className="lg:col-span-3 space-y-5 bg-white rounded-2xl shadow-lg p-4 sm:p-8">
 
               {/* Contact */}
               <div>
@@ -359,10 +359,10 @@ export default function PoultryServicesPage() {
                 <h3 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
                   <Package className="w-4 h-4 text-aj-yellow" /> Order Quantity
                 </h3>
-                <div className="flex items-center gap-4">
+                <div className="flex flex-wrap items-center gap-3 sm:gap-4">
                   <button type="button"
                     onClick={() => setForm(f => ({ ...f, crates: Math.max(1, f.crates - 1) }))}
-                    className="w-11 h-11 rounded-xl border-2 border-gray-200 bg-white flex items-center justify-center hover:border-aj-yellow hover:bg-yellow-50 transition select-none"
+                    className="w-11 h-11 flex-shrink-0 rounded-xl border-2 border-gray-200 bg-white flex items-center justify-center hover:border-aj-yellow hover:bg-yellow-50 transition select-none"
                     style={{ fontSize: '1.5rem', lineHeight: 1, fontWeight: 700, color: '#1A1A1A' }}
                   >
                     <span aria-hidden="true">&#8722;</span>
@@ -373,12 +373,12 @@ export default function PoultryServicesPage() {
                   </div>
                   <button type="button"
                     onClick={() => setForm(f => ({ ...f, crates: Math.min(100, f.crates + 1) }))}
-                    className="w-11 h-11 rounded-xl border-2 border-gray-200 bg-white flex items-center justify-center hover:border-aj-yellow hover:bg-yellow-50 transition select-none"
+                    className="w-11 h-11 flex-shrink-0 rounded-xl border-2 border-gray-200 bg-white flex items-center justify-center hover:border-aj-yellow hover:bg-yellow-50 transition select-none"
                     style={{ fontSize: '1.5rem', lineHeight: 1, fontWeight: 700, color: '#1A1A1A' }}
                   >
                     <span aria-hidden="true">&#43;</span>
                   </button>
-                  <div className="ml-4 bg-yellow-50 border border-yellow-200 rounded-xl px-4 py-2">
+                  <div className="bg-yellow-50 border border-yellow-200 rounded-xl px-4 py-2">
                     <p className="text-xs text-gray-500">Total</p>
                     <p className="text-xl font-bold text-aj-yellow">₦{total.toLocaleString()}</p>
                   </div>

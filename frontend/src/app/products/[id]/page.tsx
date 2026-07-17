@@ -124,7 +124,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
           </div>
 
           {/* Info */}
-          <div className="bg-white rounded-3xl shadow-lg p-8 flex flex-col justify-between">
+          <div className="bg-white rounded-3xl shadow-lg p-5 sm:p-8 flex flex-col justify-between">
             <div>
               <span className="text-xs bg-aj-yellow text-aj-dark px-3 py-1 rounded-full font-bold">
                 {product.category_name}

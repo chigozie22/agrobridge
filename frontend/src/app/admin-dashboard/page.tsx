@@ -110,17 +110,17 @@ export default function AdminDashboardPage() {
     <div className="min-h-screen bg-gray-50">
       {/* Nav */}
       <nav className="bg-gray-900 text-white sticky top-0 z-50 shadow-lg">
-        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <span className="text-2xl font-bold">
+        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <span className="text-lg sm:text-2xl font-bold whitespace-nowrap">
               <span className="text-white">Agro</span><span className="text-aj-yellow">Bridge</span>
             </span>
-            <span className="bg-aj-yellow text-gray-900 text-xs font-bold px-2 py-0.5 rounded">ADMIN</span>
+            <span className="bg-aj-yellow text-gray-900 text-xs font-bold px-2 py-0.5 rounded flex-shrink-0">ADMIN</span>
           </div>
-          <div className="flex items-center gap-4">
-            <Link href="/dashboard" className="text-gray-300 hover:text-white text-sm">User Dashboard</Link>
-            <Link href="/ai-planner" className="text-gray-300 hover:text-white text-sm">AI Planner</Link>
-            <button onClick={handleLogout} className="flex items-center gap-2 text-red-400 hover:text-red-300 text-sm font-semibold">
+          <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
+            <Link href="/dashboard" className="text-gray-300 hover:text-white text-sm hidden sm:block">User Dashboard</Link>
+            <Link href="/ai-planner" className="text-gray-300 hover:text-white text-sm hidden sm:block">AI Planner</Link>
+            <button onClick={handleLogout} className="flex items-center gap-1.5 sm:gap-2 text-red-400 hover:text-red-300 text-sm font-semibold">
               <LogOut className="w-4 h-4" /> Logout
             </button>
           </div>

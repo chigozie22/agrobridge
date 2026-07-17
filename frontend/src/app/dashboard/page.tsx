@@ -249,22 +249,22 @@ export default function DashboardPage() {
                     <Link key={order.id} href={`/orders/${order.id}`}
                       className="flex items-center justify-between p-4 rounded-xl border-2 border-gray-100 hover:border-aj-yellow transition group"
                     >
-                      <div className="flex items-center gap-3">
-                        <div className="bg-gray-100 rounded-xl p-2.5 group-hover:bg-yellow-50 transition">
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="bg-gray-100 rounded-xl p-2.5 group-hover:bg-yellow-50 transition flex-shrink-0">
                           <Package className="w-5 h-5 text-gray-500" />
                         </div>
-                        <div>
-                          <p className="font-bold text-gray-900 text-sm">Order #{order.id}</p>
-                          <p className="text-xs text-gray-500">
+                        <div className="min-w-0">
+                          <p className="font-bold text-gray-900 text-sm truncate">Order #{order.id}</p>
+                          <p className="text-xs text-gray-500 truncate">
                             {new Date(order.created_at).toLocaleDateString('en-NG', { day: 'numeric', month: 'short', year: 'numeric' })}
                             {' · '}{order.items?.length ?? 0} item{order.items?.length !== 1 ? 's' : ''}
                           </p>
                         </div>
                       </div>
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-3 flex-shrink-0">
                         <div className="text-right">
                           <p className="font-bold text-aj-yellow text-sm">₦{Number(order.total_amount).toLocaleString()}</p>
-                          <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold ${cfg.color}`}>
+                          <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold whitespace-nowrap ${cfg.color}`}>
                             <Icon className="w-3 h-3" />{cfg.label}
                           </span>
                         </div>

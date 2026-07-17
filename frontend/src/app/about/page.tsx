@@ -22,7 +22,7 @@ export default function AboutPage() {
       {/* Hero */}
       <section className="bg-gradient-to-br from-gray-900 to-aj-green text-white py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-5xl font-bold mb-6">About <span className="text-aj-yellow">AgroBridge</span></h1>
+          <h1 className="text-3xl sm:text-5xl font-bold mb-6">About <span className="text-aj-yellow">AgroBridge</span></h1>
           <p className="text-xl text-white/80 max-w-2xl mx-auto leading-relaxed">
             We help students and residents in Owerri buy fresh food at lower prices by combining their orders and delivering together.
           </p>
