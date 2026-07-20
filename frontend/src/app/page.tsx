@@ -25,6 +25,7 @@ const products = [
 
 export default function Home() {
   const [user, setUser] = useState<any>(null)
+  const [authChecked, setAuthChecked] = useState(false)
 
   useEffect(() => {
     // Check if user is logged in
@@ -36,6 +37,7 @@ export default function Home() {
         console.error('Error parsing user data:', err)
       }
     }
+    setAuthChecked(true)
   }, [])
 
   const handleClusterSelect = (clusterName: string) => {
@@ -59,7 +61,9 @@ export default function Home() {
           { href: '/about', label: 'About Us' },
         ]}
         rightSlot={
-          user ? (
+          !authChecked ? (
+            <div className="w-24 h-9" aria-hidden="true" />
+          ) : user ? (
             <>
               <Link href="/dashboard" className="text-gray-700 hover:text-aj-yellow transition font-semibold text-sm hidden sm:block">
                 Dashboard

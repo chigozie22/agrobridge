@@ -125,6 +125,11 @@ export default function ProductsPage() {
       .then(r => r.json())
       .then(d => setComboImages(d.images || []))
       .catch(() => {})
+
+    const params = new URLSearchParams(window.location.search)
+    if (params.get('category') === 'bundles') {
+      handleSeeAllCombos()
+    }
   }, [])
 
   useEffect(() => {

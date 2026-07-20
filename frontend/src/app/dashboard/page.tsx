@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { ShoppingBag, TrendingDown, MapPin, Calendar, Package, LogOut, User, Settings, ChevronRight, Clock, CheckCircle, Truck, XCircle, AlertCircle } from 'lucide-react'
+import { ShoppingBag, TrendingDown, MapPin, Calendar, Package, LogOut, User, Settings, ChevronRight, Clock, CheckCircle, Truck, XCircle, AlertCircle, Copy, Check } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
@@ -24,6 +24,17 @@ export default function DashboardPage() {
   const [nextDelivery, setNextDelivery] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [ordersLoading, setOrdersLoading] = useState(true)
+  const [referralCopied, setReferralCopied] = useState(false)
+
+  const handleCopyReferralLink = async () => {
+    if (!user) return
+    const link = `${window.location.origin}/signup?ref=${user.id}`
+    try {
+      await navigator.clipboard.writeText(link)
+      setReferralCopied(true)
+      setTimeout(() => setReferralCopied(false), 2000)
+    } catch {}
+  }
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken')
@@ -298,7 +309,7 @@ export default function DashboardPage() {
                 >
                   <Package className="w-5 h-5" /> My Orders
                 </Link>
-                <Link href="/products/combos"
+                <Link href="/products?category=bundles"
                   className="flex items-center gap-3 p-4 bg-gray-100 hover:bg-gray-200 rounded-xl transition font-semibold text-gray-700"
                 >
                   <Settings className="w-5 h-5" /> Food Bundles
@@ -345,8 +356,11 @@ export default function DashboardPage() {
             <p className="mb-6 text-green-100">
               Invite your friends to join AgroBridge and get ₦500 credit for each successful referral.
             </p>
-            <button className="bg-white text-aj-green px-6 py-3 rounded-xl font-bold hover:bg-gray-100 transition">
-              Get Your Referral Link
+            <button
+              onClick={handleCopyReferralLink}
+              className="bg-white text-aj-green px-6 py-3 rounded-xl font-bold hover:bg-gray-100 transition flex items-center gap-2"
+            >
+              {referralCopied ? <><Check className="w-4 h-4" /> Link Copied!</> : <><Copy className="w-4 h-4" /> Get Your Referral Link</>}
             </button>
           </div>
         </div>
