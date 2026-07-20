@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'apps.vendors',
     'apps.aggregation',
     'apps.pricing',
+    'apps.forecasting',
     'apps.orders',
     'apps.deliveries',
     'apps.poultry',

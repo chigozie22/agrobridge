@@ -120,6 +120,7 @@ export default function AdminDashboardPage() {
           <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
             <Link href="/admin-dashboard" className="text-white font-semibold text-sm hidden sm:block">Order Management</Link>
             <Link href="/admin-dashboard/aggregation" className="text-gray-300 hover:text-white text-sm hidden sm:block">Aggregation</Link>
+            <Link href="/admin-dashboard/forecasting" className="text-gray-300 hover:text-white text-sm hidden sm:block">Forecasting</Link>
             <Link href="/dashboard" className="text-gray-300 hover:text-white text-sm hidden sm:block">User Dashboard</Link>
             <Link href="/ai-planner" className="text-gray-300 hover:text-white text-sm hidden sm:block">AI Planner</Link>
             <button onClick={handleLogout} className="flex items-center gap-1.5 sm:gap-2 text-red-400 hover:text-red-300 text-sm font-semibold">
