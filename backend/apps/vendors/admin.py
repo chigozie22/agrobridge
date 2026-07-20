@@ -3,7 +3,7 @@ from .models import Vendor, VendorPrice
 
 @admin.register(Vendor)
 class VendorAdmin(admin.ModelAdmin):
-    list_display = ['name', 'vendor_type', 'phone', 'trust_score', 'is_verified', 'is_active']
+    list_display = ['name', 'vendor_type', 'phone', 'trust_score', 'is_verified', 'is_active', 'latitude', 'longitude']
     list_filter = ['vendor_type', 'is_verified', 'is_active']
     search_fields = ['name', 'phone']
 

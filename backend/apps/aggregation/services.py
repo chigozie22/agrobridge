@@ -11,6 +11,7 @@ from django.utils import timezone
 
 from apps.orders.models import Order
 from apps.vendors.models import VendorPrice
+from apps.vendors.geo import distance_to_vendor, is_local_vendor, LOCAL_PRICE_TOLERANCE
 
 from .models import AggregationRun, PriceOptimization, VendorAllocation
 
@@ -46,10 +47,10 @@ class AggregationEngine:
         agg_run.save(update_fields=['run_number'])
 
         quantities, products = self._group_items_by_product(orders)
-        unfulfilled, vendor_by_product = self._optimize_prices(agg_run, quantities, products)
+        unfulfilled, vendor_by_product, local_notes = self._optimize_prices(agg_run, quantities, products)
         self._assign_vendors(orders, vendor_by_product)
         vendor_totals = self._roll_up_vendor_allocations(agg_run, orders)
-        self._finalize_run(agg_run, orders, vendor_totals, unfulfilled)
+        self._finalize_run(agg_run, orders, vendor_totals, unfulfilled, local_notes)
 
         Order.objects.filter(id__in=[o.id for o in orders]).update(
             aggregation_run=agg_run, status='PROCESSING',
@@ -69,11 +70,18 @@ class AggregationEngine:
                 products[item.product_id] = item.product
         return quantities, products
 
-    @staticmethod
-    def _optimize_prices(agg_run, quantities, products):
-        """Pick the cheapest available vendor per product; record the optimization."""
+    def _optimize_prices(self, agg_run, quantities, products):
+        """
+        Pick a vendor per product: the cheapest available, unless a local
+        vendor (within LOCAL_RADIUS_KM of the cluster) is priced within
+        LOCAL_PRICE_TOLERANCE of that cheapest price, in which case the
+        closest such local vendor is preferred to cut logistics cost.
+        Falls back to pure cheapest whenever the cluster or vendors lack
+        coordinates — byte-for-byte the old behavior.
+        """
         unfulfilled = []
         vendor_by_product = {}
+        local_notes = []
         for product_id, total_qty in quantities.items():
             product = products[product_id]
             prices = list(
@@ -85,22 +93,40 @@ class AggregationEngine:
                 unfulfilled.append(product.name)
                 continue
 
-            best = prices[0]
+            cheapest = prices[0]
+            selected = cheapest
+
+            price_ceiling = cheapest.price * (1 + LOCAL_PRICE_TOLERANCE)
+            local_candidates = [
+                vp for vp in prices
+                if vp.price <= price_ceiling and is_local_vendor(self.cluster, vp.vendor)
+            ]
+            if local_candidates:
+                closest = min(local_candidates, key=lambda vp: distance_to_vendor(self.cluster, vp.vendor))
+                if closest.vendor_id != cheapest.vendor_id:
+                    selected = closest
+                    local_notes.append(
+                        f"{product.name}: chose local vendor {closest.vendor.name} "
+                        f"(₦{closest.price}, {distance_to_vendor(self.cluster, closest.vendor):.1f}km away) "
+                        f"over cheaper distant vendor {cheapest.vendor.name} (₦{cheapest.price}) "
+                        f"to reduce logistics cost"
+                    )
+
             market_average = (sum(p.price for p in prices) / len(prices)).quantize(TWO_PLACES)
 
             optimization = PriceOptimization.objects.create(
                 aggregation_run=agg_run,
                 product=product,
                 total_quantity_needed=total_qty,
-                selected_vendor=best.vendor,
-                selected_price=best.price,
+                selected_vendor=selected.vendor,
+                selected_price=selected.price,
                 market_average_price=market_average,
                 alternatives_evaluated=len(prices),
             )
             optimization.calculate_savings()
-            vendor_by_product[product_id] = best.vendor
+            vendor_by_product[product_id] = selected.vendor
 
-        return unfulfilled, vendor_by_product
+        return unfulfilled, vendor_by_product, local_notes
 
     @staticmethod
     def _assign_vendors(orders, vendor_by_product):
@@ -136,7 +162,7 @@ class AggregationEngine:
         return vendor_totals
 
     @staticmethod
-    def _finalize_run(agg_run, orders, vendor_totals, unfulfilled):
+    def _finalize_run(agg_run, orders, vendor_totals, unfulfilled, local_notes=None):
         total_order_value = sum((order.total_amount for order in orders), Decimal('0'))
         total_savings = sum(
             (po.total_savings for po in agg_run.price_optimizations.all()), Decimal('0')
@@ -151,6 +177,12 @@ class AggregationEngine:
         agg_run.vendors_involved = len(vendor_totals)
         agg_run.status = 'completed'
         agg_run.completed_at = timezone.now()
+
+        note_parts = []
         if unfulfilled:
-            agg_run.notes = 'Could not source vendor pricing for: ' + ', '.join(unfulfilled)
+            note_parts.append('Could not source vendor pricing for: ' + ', '.join(unfulfilled))
+        if local_notes:
+            note_parts.append('Local sourcing: ' + '; '.join(local_notes))
+        if note_parts:
+            agg_run.notes = ' | '.join(note_parts)
         agg_run.save()

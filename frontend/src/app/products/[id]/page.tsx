@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, ShoppingCart, Package, Thermometer, Clock, Tag, Store } from 'lucide-react'
+import { ArrowLeft, ShoppingCart, Package, Thermometer, Clock, Tag, Store, MapPin } from 'lucide-react'
 import { useCart } from '@/context/CartContext'
 import Navbar from '@/components/Navbar'
 
@@ -44,11 +44,23 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
 
   const fetchProduct = async () => {
     try {
-      const res = await fetch(`${API_URL}/api/products/${params.id}/`)
+      let url = `${API_URL}/api/products/${params.id}/`
+      const clusterId = getStoredClusterId()
+      if (clusterId) url += `?cluster=${clusterId}`
+      const res = await fetch(url)
       if (!res.ok) return
       setProduct(await res.json())
     } catch {}
     finally { setLoading(false) }
+  }
+
+  const getStoredClusterId = () => {
+    try {
+      const stored = localStorage.getItem('user')
+      if (!stored) return null
+      const u = JSON.parse(stored)
+      return u?.cluster?.id ?? null
+    } catch { return null }
   }
 
   const handleAddToCart = (price: number) => {
@@ -184,36 +196,73 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
         </div>
 
         {/* Vendor prices */}
-        {product.vendor_prices?.filter((vp: any) => vp.is_available).length > 0 && (
-          <div className="bg-white rounded-2xl shadow-sm p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <Store className="w-5 h-5 text-aj-yellow" /> Available from {product.vendor_prices.filter((vp: any) => vp.is_available).length} vendor{product.vendor_prices.filter((vp: any) => vp.is_available).length !== 1 ? 's' : ''}
-            </h2>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {product.vendor_prices
-                .filter((vp: any) => vp.is_available)
-                .sort((a: any, b: any) => Number(a.price) - Number(b.price))
-                .map((vp: any) => (
-                  <div key={vp.id} className="border-2 border-gray-100 rounded-xl p-4 hover:border-aj-yellow transition">
-                    <div className="flex items-center justify-between mb-2">
-                      <p className="font-bold text-gray-900 text-sm">{vp.vendor_name}</p>
-                      <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">{vp.vendor_type}</span>
-                    </div>
-                    <p className="text-xl font-bold text-aj-yellow">₦{Number(vp.price).toLocaleString()}</p>
-                    <p className="text-xs text-gray-500 mt-1">
-                      Min: {vp.min_quantity} {product.unit} · Stock: {vp.stock_quantity}
-                    </p>
-                    <button
-                      onClick={() => handleAddToCart(Number(vp.price))}
-                      className="w-full mt-3 bg-aj-yellow text-aj-dark py-2 rounded-lg text-sm font-bold hover:bg-yellow-400 transition"
-                    >
-                      Add at ₦{Number(vp.price).toLocaleString()}
-                    </button>
-                  </div>
-                ))}
+        {(() => {
+          const available = (product.vendor_prices || []).filter((vp: any) => vp.is_available)
+          if (available.length === 0) return null
+          const local = available.filter((vp: any) => vp.is_local).sort((a: any, b: any) => Number(a.price) - Number(b.price))
+          const others = available.filter((vp: any) => !vp.is_local).sort((a: any, b: any) => Number(a.price) - Number(b.price))
+
+          const renderVendorCard = (vp: any) => (
+            <div key={vp.id} className="border-2 border-gray-100 rounded-xl p-4 hover:border-aj-yellow transition">
+              <div className="flex items-center justify-between mb-2">
+                <p className="font-bold text-gray-900 text-sm">{vp.vendor_name}</p>
+                <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">{vp.vendor_type}</span>
+              </div>
+              {vp.is_local && (
+                <p className="text-xs text-aj-green font-semibold flex items-center gap-1 mb-1">
+                  <MapPin className="w-3 h-3" /> ~{vp.distance_km}km away
+                </p>
+              )}
+              <p className="text-xl font-bold text-aj-yellow">₦{Number(vp.price).toLocaleString()}</p>
+              <p className="text-xs text-gray-500 mt-1">
+                Min: {vp.min_quantity} {product.unit} · Stock: {vp.stock_quantity}
+              </p>
+              <button
+                onClick={() => handleAddToCart(Number(vp.price))}
+                className="w-full mt-3 bg-aj-yellow text-aj-dark py-2 rounded-lg text-sm font-bold hover:bg-yellow-400 transition"
+              >
+                Add at ₦{Number(vp.price).toLocaleString()}
+              </button>
             </div>
-          </div>
-        )}
+          )
+
+          if (local.length === 0) {
+            return (
+              <div className="bg-white rounded-2xl shadow-sm p-6">
+                <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                  <Store className="w-5 h-5 text-aj-yellow" /> Available from {available.length} vendor{available.length !== 1 ? 's' : ''}
+                </h2>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {others.map(renderVendorCard)}
+                </div>
+              </div>
+            )
+          }
+
+          return (
+            <div className="space-y-6">
+              <div className="bg-white rounded-2xl shadow-sm p-6">
+                <h2 className="text-xl font-bold text-gray-900 mb-1 flex items-center gap-2">
+                  🌾 Near Your Cluster
+                </h2>
+                <p className="text-sm text-gray-500 mb-4">Buying from these farmers cuts delivery/logistics cost for your cluster.</p>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {local.map(renderVendorCard)}
+                </div>
+              </div>
+              {others.length > 0 && (
+                <div className="bg-white rounded-2xl shadow-sm p-6">
+                  <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                    <Store className="w-5 h-5 text-aj-yellow" /> Other Vendors
+                  </h2>
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {others.map(renderVendorCard)}
+                  </div>
+                </div>
+              )}
+            </div>
+          )
+        })()}
       </div>
     </div>
   )

@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Product, Category, Combo, ComboItem, ComboMealSuggestion
 from apps.vendors.models import VendorPrice
+from apps.vendors.geo import distance_to_vendor, is_local_vendor
 from apps.pricing.services import calculate_price
 
 
@@ -12,11 +13,22 @@ class CategorySerializer(serializers.ModelSerializer):
 class VendorPriceSerializer(serializers.ModelSerializer):
     vendor_name = serializers.CharField(source='vendor.name', read_only=True)
     vendor_type = serializers.CharField(source='vendor.get_vendor_type_display', read_only=True)
-    
+    distance_km = serializers.SerializerMethodField()
+    is_local = serializers.SerializerMethodField()
+
     class Meta:
         model = VendorPrice
-        fields = ['id', 'vendor', 'vendor_name', 'vendor_type', 'price', 
-                  'min_quantity', 'stock_quantity', 'is_available']
+        fields = ['id', 'vendor', 'vendor_name', 'vendor_type', 'price',
+                  'min_quantity', 'stock_quantity', 'is_available',
+                  'distance_km', 'is_local']
+
+    def get_distance_km(self, obj):
+        cluster = self.context.get('cluster')
+        distance = distance_to_vendor(cluster, obj.vendor)
+        return round(distance, 1) if distance is not None else None
+
+    def get_is_local(self, obj):
+        return is_local_vendor(self.context.get('cluster'), obj.vendor)
 
 class ClusterPricingMixin:
     """Shared cluster-aware tier pricing fields, computed once per object."""

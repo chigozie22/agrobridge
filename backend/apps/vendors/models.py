@@ -21,7 +21,11 @@ class Vendor(models.Model):
     phone = models.CharField(max_length=20)
     email = models.EmailField(blank=True)
     address = models.TextField()
-    
+
+    # Geographic coordinates (optional — enables location-aware sourcing)
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+
     # Trust and verification
     trust_score = models.DecimalField(max_digits=3, decimal_places=2, default=5.0)
     is_verified = models.BooleanField(default=False)
