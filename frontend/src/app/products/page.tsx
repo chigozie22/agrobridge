@@ -149,12 +149,26 @@ export default function ProductsPage() {
     try {
       setLoading(true)
       let url = `${API_URL}/api/products/`
-      if (selectedCategory !== 'all' && selectedCategory !== 'bundles') url += `?category=${selectedCategory}`
+      const params = new URLSearchParams()
+      if (selectedCategory !== 'all' && selectedCategory !== 'bundles') params.set('category', selectedCategory)
+      const clusterId = getStoredClusterId()
+      if (clusterId) params.set('cluster', String(clusterId))
+      const qs = params.toString()
+      if (qs) url += `?${qs}`
       const res = await fetch(url)
       const data = await res.json()
       setProducts(data.results || data)
     } catch { setError('Failed to load products') }
     finally { setLoading(false) }
+  }
+
+  const getStoredClusterId = () => {
+    try {
+      const stored = localStorage.getItem('user')
+      if (!stored) return null
+      const u = JSON.parse(stored)
+      return u?.cluster?.id ?? null
+    } catch { return null }
   }
 
   const fetchFeaturedCombos = async () => {
@@ -194,7 +208,7 @@ export default function ProductsPage() {
     : selectedBudget
 
   const filteredProducts = activeBudget
-    ? products.filter(p => p.cheapest_price <= activeBudget)
+    ? products.filter(p => (p.cluster_price ?? p.cheapest_price) <= activeBudget)
     : products
 
   const filteredFeaturedCombos = activeBudget
@@ -768,7 +782,10 @@ function ComboCard({ combo, localImages, onAddToCart }: {
 
 // ── Product Card ─────────────────────────────────────────────────────────────
 function ProductCard({ product, onAddToCart }: { product: any; onAddToCart: (item: any) => void }) {
-  const isBelowMin = product.cheapest_price < 500
+  const displayPrice = Number(product.cluster_price ?? product.cheapest_price)
+  const basePrice = Number(product.cheapest_price)
+  const isDiscounted = product.cluster_price != null && displayPrice < basePrice
+  const isBelowMin = displayPrice < 500
   const imgSrc = product.image || PRODUCT_IMAGES[product.name as string]
 
   return (
@@ -785,6 +802,11 @@ function ProductCard({ product, onAddToCart }: { product: any; onAddToCart: (ite
               <span className="text-white font-bold text-xs">Below ₦500 Min</span>
             </div>
           )}
+          {isDiscounted && (
+            <div className="absolute top-2 left-2 bg-green-600 text-white px-2 py-0.5 rounded-full text-xs font-bold">
+              {product.tier_label || 'Cluster Deal'}
+            </div>
+          )}
         </div>
       </Link>
       <div className="p-4">
@@ -795,8 +817,11 @@ function ProductCard({ product, onAddToCart }: { product: any; onAddToCart: (ite
         <p className="text-xs text-gray-500 mt-0.5">{product.vendor_count} vendor{product.vendor_count !== 1 ? 's' : ''}</p>
         <div className="flex items-center justify-between mt-3">
           <div>
-            <span className={`text-xl font-bold ${isBelowMin ? 'text-gray-400' : 'text-aj-yellow'}`}>
-              ₦{product.cheapest_price?.toLocaleString()}
+            {isDiscounted && (
+              <span className="text-xs text-gray-400 line-through mr-1">₦{basePrice.toLocaleString()}</span>
+            )}
+            <span className={`text-xl font-bold ${isBelowMin ? 'text-gray-400' : isDiscounted ? 'text-green-600' : 'text-aj-yellow'}`}>
+              ₦{displayPrice.toLocaleString()}
             </span>
             <span className="text-xs text-gray-500">/{product.unit}</span>
           </div>
@@ -805,7 +830,7 @@ function ProductCard({ product, onAddToCart }: { product: any; onAddToCart: (ite
             onClick={() => !isBelowMin && onAddToCart({
               id: `product-${product.id}`,
               name: product.name,
-              price: Number(product.cheapest_price),
+              price: displayPrice,
               type: 'product',
               unit: product.unit,
             })}
@@ -816,6 +841,13 @@ function ProductCard({ product, onAddToCart }: { product: any; onAddToCart: (ite
             {isBelowMin ? 'Min ₦500' : <><Plus className="w-3 h-3" /> Add</>}
           </button>
         </div>
+        {product.next_tier_quantity != null && (
+          <p className="text-xs text-gray-500 mt-2 bg-yellow-50 border border-yellow-200 rounded-lg px-2 py-1.5">
+            🔥 {product.current_cluster_quantity} ordered by your cluster —{' '}
+            <strong className="text-gray-700">{product.next_tier_quantity - product.current_cluster_quantity} more</strong>{' '}
+            unlocks ₦{Number(product.next_tier_price).toLocaleString()}
+          </p>
+        )}
       </div>
     </div>
   )

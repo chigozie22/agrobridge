@@ -25,6 +25,23 @@ class ProductViewSet(ReadOnlyModelViewSet):
             return ProductDetailSerializer
         return ProductListSerializer
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['cluster'] = self._resolve_cluster()
+        return context
+
+    def _resolve_cluster(self):
+        request = self.request
+        if request.user and request.user.is_authenticated and request.user.cluster_id:
+            return request.user.cluster
+
+        cluster_id = request.query_params.get('cluster')
+        if cluster_id:
+            from apps.clusters.models import Cluster
+            return Cluster.objects.filter(id=cluster_id).first()
+
+        return None
+
     @action(detail=False, methods=['get'], url_path='categories')
     def categories(self, request):
         categories = Category.objects.all()

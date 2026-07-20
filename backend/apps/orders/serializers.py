@@ -1,6 +1,7 @@
 from decimal import Decimal
 from rest_framework import serializers
 from apps.products.models import Product, Combo
+from apps.pricing.services import calculate_price
 from .models import Order, OrderItem
 
 
@@ -59,7 +60,6 @@ class OrderCreateSerializer(serializers.Serializer):
         for item_data in validated_data['items']:
             raw_id = item_data['id']          # "combo-3" or "product-7"
             item_type = item_data['type']
-            price = item_data['price']
             quantity = item_data['quantity']
 
             # Parse the numeric ID out of the prefixed string
@@ -75,6 +75,14 @@ class OrderCreateSerializer(serializers.Serializer):
                 combo_obj = Combo.objects.filter(id=numeric_id).first()
             elif item_type == 'product' and numeric_id:
                 product_obj = Product.objects.filter(id=numeric_id).first()
+
+            # Never trust the client-submitted price — recompute server-side.
+            if combo_obj:
+                price = combo_obj.price
+            elif product_obj:
+                price = calculate_price(product_obj, cluster)['price']
+            else:
+                price = Decimal('0')
 
             order_item = OrderItem(
                 order=order,
