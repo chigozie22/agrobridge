@@ -104,7 +104,7 @@ export default function ChatWidget() {
                     <button
                       key={q}
                       onClick={() => sendMessage(q)}
-                      className="text-left text-sm bg-gray-50 hover:bg-yellow-50 hover:border-aj-yellow border border-gray-200 rounded-xl px-3 py-2 transition"
+                      className="text-left text-sm text-gray-700 hover:text-gray-900 bg-gray-50 hover:bg-yellow-50 hover:border-aj-yellow border border-gray-200 rounded-xl px-3 py-2 transition"
                     >
                       {q}
                     </button>
@@ -148,7 +148,7 @@ export default function ChatWidget() {
               value={input}
               onChange={e => setInput(e.target.value)}
               placeholder="Type a question..."
-              className="flex-1 border-2 border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-aj-yellow"
+              className="flex-1 border-2 border-gray-200 rounded-xl px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-aj-yellow"
               disabled={loading}
             />
             <button
