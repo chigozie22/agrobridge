@@ -98,6 +98,18 @@ function getComboImage(comboId: number, localImages: string[]) {
 
 const CLUSTER_MIN = 3000
 
+// Prevents an indefinite spinner if the connection stalls without ever
+// erroring (common on flaky mobile networks) — fails loudly instead.
+async function fetchWithTimeout(url: string, timeoutMs = 15000) {
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), timeoutMs)
+  try {
+    return await fetch(url, { signal: controller.signal })
+  } finally {
+    clearTimeout(timer)
+  }
+}
+
 export default function ProductsPage() {
   const { items, addItem, removeItem, updateQuantity, total, itemCount } = useCart()
   const [products, setProducts] = useState<any[]>([])
@@ -144,7 +156,7 @@ export default function ProductsPage() {
 
   const fetchCategories = async () => {
     try {
-      const res = await fetch(`${API_URL}/api/products/categories/`)
+      const res = await fetchWithTimeout(`${API_URL}/api/products/categories/`)
       const data = await res.json()
       const all: Category[] = data.results || data
       const seen = new Set<string>()
@@ -166,7 +178,7 @@ export default function ProductsPage() {
       if (clusterId) params.set('cluster', String(clusterId))
       const qs = params.toString()
       if (qs) url += `?${qs}`
-      const res = await fetch(url)
+      const res = await fetchWithTimeout(url)
       const data = await res.json()
       setProducts(data.results || data)
     } catch { setError('Failed to load products') }
@@ -197,7 +209,7 @@ export default function ProductsPage() {
   const fetchFeaturedCombos = async () => {
     try {
       setCombosLoading(true)
-      const res = await fetch(`${API_URL}/api/products/combos/featured/`)
+      const res = await fetchWithTimeout(`${API_URL}/api/products/combos/featured/`)
       const data = await res.json()
       setFeaturedCombos(data.results || data)
     } catch {}
@@ -207,7 +219,7 @@ export default function ProductsPage() {
   const fetchAllCombos = async () => {
     try {
       setLoading(true)
-      const res = await fetch(`${API_URL}/api/products/combos/`)
+      const res = await fetchWithTimeout(`${API_URL}/api/products/combos/`)
       const data = await res.json()
       setAllCombos(data.results || data)
     } catch { setError('Failed to load combos') }
@@ -290,8 +302,8 @@ export default function ProductsPage() {
           <div className="absolute inset-0 bg-black/40" onClick={() => setCartOpen(false)} />
           <div className="relative bg-white w-full max-w-md h-full flex flex-col shadow-2xl">
             <div className="flex items-center justify-between p-4 border-b">
-              <h2 className="text-xl font-bold">🛒 Your Cart</h2>
-              <button onClick={() => setCartOpen(false)}><X className="w-5 h-5" /></button>
+              <h2 className="text-xl font-bold text-gray-900">🛒 Your Cart</h2>
+              <button onClick={() => setCartOpen(false)} className="text-gray-500 hover:text-gray-700"><X className="w-5 h-5" /></button>
             </div>
 
             <div className="flex-1 overflow-y-auto p-4 space-y-3">
@@ -310,14 +322,14 @@ export default function ProductsPage() {
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                      className="w-7 h-7 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center"
+                      className="w-7 h-7 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center text-gray-700"
                     >
                       <Minus className="w-3 h-3" />
                     </button>
-                    <span className="w-6 text-center font-bold text-sm">{item.quantity}</span>
+                    <span className="w-6 text-center font-bold text-sm text-gray-900">{item.quantity}</span>
                     <button
                       onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                      className="w-7 h-7 rounded-full bg-aj-yellow hover:bg-yellow-400 flex items-center justify-center"
+                      className="w-7 h-7 rounded-full bg-aj-yellow hover:bg-yellow-400 flex items-center justify-center text-aj-dark"
                     >
                       <Plus className="w-3 h-3" />
                     </button>
@@ -650,21 +662,21 @@ export default function ProductsPage() {
             <h2 className="text-3xl font-bold text-gray-900 mb-3">Cool Features to Simplify Your Shopping</h2>
           </div>
           <div className="grid md:grid-cols-3 gap-6 mb-12">
-            <div className="bg-gradient-to-br from-yellow-400 via-orange-400 to-orange-500 rounded-2xl p-8 text-white shadow-lg">
+            <Link href="/clusters" className="block bg-gradient-to-br from-yellow-400 via-orange-400 to-orange-500 rounded-2xl p-8 text-white shadow-lg hover:shadow-2xl hover:scale-105 transition-all">
               <div className="bg-white/20 rounded-full w-14 h-14 flex items-center justify-center mb-4"><Users className="w-7 h-7 text-white" /></div>
               <h3 className="text-xl font-bold mb-2">Cluster Buying</h3>
               <p className="text-white/90 text-sm">Join your neighbors to buy in bulk and save 20-30% on every purchase.</p>
-            </div>
-            <div className="bg-gradient-to-br from-aj-yellow via-yellow-400 to-yellow-500 rounded-2xl p-8 text-aj-dark shadow-lg">
+            </Link>
+            <button onClick={handleSeeAllCombos} className="block w-full text-left bg-gradient-to-br from-aj-yellow via-yellow-400 to-yellow-500 rounded-2xl p-8 text-aj-dark shadow-lg hover:shadow-2xl hover:scale-105 transition-all">
               <div className="bg-aj-dark/10 rounded-full w-14 h-14 flex items-center justify-center mb-4"><Sparkles className="w-7 h-7 text-aj-dark" /></div>
               <h3 className="text-xl font-bold mb-2">Smart Food Bundles</h3>
               <p className="text-aj-dark/90 text-sm">Pre-planned meal packages that solve budgeting and meal planning.</p>
-            </div>
-            <div className="bg-gradient-to-br from-green-500 via-green-600 to-aj-yellow rounded-2xl p-8 text-white shadow-lg">
+            </button>
+            <Link href="/clusters" className="block bg-gradient-to-br from-green-500 via-green-600 to-aj-yellow rounded-2xl p-8 text-white shadow-lg hover:shadow-2xl hover:scale-105 transition-all">
               <div className="bg-white/20 rounded-full w-14 h-14 flex items-center justify-center mb-4"><TrendingUp className="w-7 h-7 text-white" /></div>
               <h3 className="text-xl font-bold mb-2">Batch Delivery</h3>
               <p className="text-white/90 text-sm">Choose same-day or cluster batch delivery to save an extra 5-10%.</p>
-            </div>
+            </Link>
           </div>
 
           <div className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-3xl overflow-hidden border-2 border-yellow-200">

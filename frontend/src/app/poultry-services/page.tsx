@@ -419,15 +419,15 @@ export default function PoultryServicesPage() {
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between">
                     <span className="text-gray-600">Price per crate</span>
-                    <span className="font-semibold">₦{CRATE_PRICE.toLocaleString()}</span>
+                    <span className="font-semibold text-gray-900">₦{CRATE_PRICE.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Crates ordered</span>
-                    <span className="font-semibold">{form.crates}</span>
+                    <span className="font-semibold text-gray-900">{form.crates}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Total eggs</span>
-                    <span className="font-semibold">{form.crates * 30}</span>
+                    <span className="font-semibold text-gray-900">{form.crates * 30}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Delivery fee</span>
