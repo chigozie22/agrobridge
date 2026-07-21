@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, Sparkles, TrendingUp, Users, ShoppingCart, Plus, Minus, X } from 'lucide-react'
+import { ArrowLeft, Sparkles, TrendingUp, Users, ShoppingCart, Plus, Minus, X, Search } from 'lucide-react'
 import { useCart } from '@/context/CartContext'
 import Navbar from '@/components/Navbar'
 
@@ -106,6 +106,8 @@ export default function ProductsPage() {
   const [allCombos, setAllCombos] = useState<Combo[]>([])
   const [comboImages, setComboImages] = useState<string[]>([])
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [activeSearch, setActiveSearch] = useState('')
   const [selectedBudget, setSelectedBudget] = useState<number | null>(null)
   const [customBudget, setCustomBudget] = useState('')
   const [showCustomInput, setShowCustomInput] = useState(false)
@@ -138,7 +140,7 @@ export default function ProductsPage() {
     } else {
       fetchProducts()
     }
-  }, [selectedCategory])
+  }, [selectedCategory, activeSearch])
 
   const fetchCategories = async () => {
     try {
@@ -155,7 +157,11 @@ export default function ProductsPage() {
       setLoading(true)
       let url = `${API_URL}/api/products/`
       const params = new URLSearchParams()
-      if (selectedCategory !== 'all' && selectedCategory !== 'bundles') params.set('category', selectedCategory)
+      if (activeSearch) {
+        params.set('search', activeSearch)
+      } else if (selectedCategory !== 'all' && selectedCategory !== 'bundles') {
+        params.set('category', selectedCategory)
+      }
       const clusterId = getStoredClusterId()
       if (clusterId) params.set('cluster', String(clusterId))
       const qs = params.toString()
@@ -165,6 +171,18 @@ export default function ProductsPage() {
       setProducts(data.results || data)
     } catch { setError('Failed to load products') }
     finally { setLoading(false) }
+  }
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    setSelectedCategory('all')
+    setActiveSearch(searchQuery.trim())
+    setTimeout(() => bundlesSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50)
+  }
+
+  const handleClearSearch = () => {
+    setSearchQuery('')
+    setActiveSearch('')
   }
 
   const getStoredClusterId = () => {
@@ -353,6 +371,36 @@ export default function ProductsPage() {
               Feed Your Family for <span className="text-aj-yellow">Less</span>
             </h1>
             <p className="text-xl text-gray-600 mb-8">Save up to 30% through group buying with your neighbors</p>
+
+            <form onSubmit={handleSearchSubmit} className="max-w-xl mx-auto mb-6 flex gap-2">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={e => setSearchQuery(e.target.value)}
+                  placeholder="Search for rice, beans, plantain..."
+                  className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-aj-yellow text-sm"
+                />
+              </div>
+              <button
+                type="submit"
+                className="bg-aj-yellow text-aj-dark px-6 py-3 rounded-xl font-bold hover:bg-yellow-400 transition flex items-center gap-2 flex-shrink-0"
+              >
+                <Search className="w-4 h-4" /> <span className="hidden sm:inline">Search</span>
+              </button>
+            </form>
+            {activeSearch && (
+              <div className="flex items-center justify-center gap-2 mb-6">
+                <span className="text-sm text-gray-600">
+                  Search results for <strong className="text-aj-yellow">"{activeSearch}"</strong>
+                </span>
+                <button onClick={handleClearSearch} className="text-xs text-red-500 hover:underline font-semibold">
+                  Clear ✕
+                </button>
+              </div>
+            )}
+
             <div className="flex flex-wrap justify-center gap-3">
               <span className="text-gray-700 font-semibold self-center">💰 Budget:</span>
               {BUDGET_OPTIONS.map(({ label, value }) => (
@@ -420,6 +468,7 @@ export default function ProductsPage() {
         </div>
 
         {/* ── Featured Combos ───────────────────────────────── */}
+        {!activeSearch && (
         <div className="mb-16">
           <div className="flex justify-between items-center mb-6">
             <div>
@@ -456,6 +505,7 @@ export default function ProductsPage() {
             </div>
           )}
         </div>
+        )}
 
         {/* ── Shop by Category ──────────────────────────────── */}
         <div className="mb-16" ref={bundlesSectionRef} id="shop-section">
@@ -464,7 +514,7 @@ export default function ProductsPage() {
               <h2 className="text-3xl font-bold text-gray-900 mb-1">🛒 Shop by Category</h2>
               <p className="text-gray-600">Browse individual products or build your own custom order</p>
             </div>
-            {selectedCategory !== 'all' && (
+            {selectedCategory !== 'all' && !activeSearch && (
               <button onClick={() => setSelectedCategory('all')} className="text-aj-yellow hover:underline font-bold">
                 View All →
               </button>
@@ -472,6 +522,7 @@ export default function ProductsPage() {
           </div>
 
           {/* Category Grid */}
+          {!activeSearch && (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-8">
             {/* Food Bundles — always first */}
             <button
@@ -529,6 +580,7 @@ export default function ProductsPage() {
               )
             })}
           </div>
+          )}
 
           {/* Products / Bundles Grid */}
           {loading ? (
@@ -542,7 +594,8 @@ export default function ProductsPage() {
             <>
               <div className="mb-4">
                 <h3 className="text-2xl font-bold text-gray-900">
-                  {selectedCategory === 'all' ? 'All Products'
+                  {activeSearch ? `Search Results`
+                    : selectedCategory === 'all' ? 'All Products'
                     : selectedCategory === 'bundles' ? 'All Food Bundles'
                     : categories.find(c => c.id.toString() === selectedCategory)?.name}
                 </h3>
@@ -575,9 +628,14 @@ export default function ProductsPage() {
               ) : (
                 <div className="text-center py-12 bg-white rounded-2xl border-2 border-gray-200">
                   <div className="text-6xl mb-4">🛒</div>
-                  <p className="text-gray-500 mb-4">No products in this category yet.</p>
-                  <button onClick={() => setSelectedCategory('all')} className="bg-aj-yellow text-aj-dark px-6 py-2 rounded-lg font-semibold">
-                    Browse All
+                  <p className="text-gray-500 mb-4">
+                    {activeSearch ? `No products found for "${activeSearch}".` : 'No products in this category yet.'}
+                  </p>
+                  <button
+                    onClick={() => activeSearch ? handleClearSearch() : setSelectedCategory('all')}
+                    className="bg-aj-yellow text-aj-dark px-6 py-2 rounded-lg font-semibold"
+                  >
+                    {activeSearch ? 'Clear Search' : 'Browse All'}
                   </button>
                 </div>
               )}
