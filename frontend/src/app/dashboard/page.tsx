@@ -222,7 +222,7 @@ export default function DashboardPage() {
         <div className="grid lg:grid-cols-3 gap-6">
 
           {/* Recent Orders */}
-          <div className="lg:col-span-2 bg-white rounded-xl p-6 shadow-md">
+          <div className="lg:col-span-2 bg-white rounded-xl p-6 shadow-md min-w-0">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-bold text-gray-900">Recent Orders</h3>
               <Link href="/orders" className="text-sm text-aj-yellow hover:underline font-semibold">View All</Link>
@@ -294,7 +294,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6">
+          <div className="space-y-6 min-w-0">
             {/* Quick Actions */}
             <div className="bg-white rounded-xl p-6 shadow-md">
               <h3 className="text-xl font-bold text-gray-900 mb-4">Quick Actions</h3>
