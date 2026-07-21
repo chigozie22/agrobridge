@@ -47,7 +47,10 @@ export default function AdminDashboardPage() {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (res.status === 403) { router.push('/dashboard'); return }
-      if (res.ok) setOrders(await res.json())
+      if (res.ok) {
+        const data = await res.json()
+        setOrders(Array.isArray(data) ? data : data.results || [])
+      }
     } catch {}
     finally { setLoading(false) }
   }, [filterStatus, filterCluster])
@@ -65,7 +68,10 @@ export default function AdminDashboardPage() {
   const fetchClusters = async () => {
     try {
       const res = await fetch(`${API_URL}/api/clusters/`)
-      if (res.ok) setClusters(await res.json())
+      if (res.ok) {
+        const data = await res.json()
+        setClusters(Array.isArray(data) ? data : data.results || [])
+      }
     } catch {}
   }
 

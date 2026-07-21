@@ -14,7 +14,7 @@ export default function ClustersPage() {
   useEffect(() => {
     fetch(`${API_URL}/api/clusters/`)
       .then(r => r.json())
-      .then(d => setClusters(d))
+      .then(d => setClusters(Array.isArray(d) ? d : d.results || []))
       .catch(() => {})
       .finally(() => setLoading(false))
   }, [])

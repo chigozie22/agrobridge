@@ -89,7 +89,10 @@ export default function AggregationPage() {
   const fetchClusters = async () => {
     try {
       const res = await fetch(`${API_URL}/api/clusters/`)
-      if (res.ok) setClusters(await res.json())
+      if (res.ok) {
+        const data = await res.json()
+        setClusters(Array.isArray(data) ? data : data.results || [])
+      }
     } catch {}
   }
 
