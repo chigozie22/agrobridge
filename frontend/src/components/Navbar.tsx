@@ -40,16 +40,16 @@ export default function Navbar({ links, rightSlot }: NavbarProps) {
                 <span className="text-gray-900">Agro</span><span className="text-aj-yellow">Bridge</span>
               </Link>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 sm:gap-4">
               {links.map(link => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={
+                  className={`hidden sm:block text-sm ${
                     link.active
-                      ? 'text-aj-yellow font-semibold text-sm'
-                      : 'text-gray-700 hover:text-aj-yellow transition hidden sm:block text-sm font-medium'
-                  }
+                      ? 'text-aj-yellow font-semibold'
+                      : 'text-gray-700 hover:text-aj-yellow transition font-medium'
+                  }`}
                 >
                   {link.label}
                 </Link>

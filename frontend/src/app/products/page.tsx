@@ -271,10 +271,10 @@ export default function ProductsPage() {
         rightSlot={
           <button
             onClick={() => setCartOpen(o => !o)}
-            className="relative bg-aj-yellow text-aj-dark px-4 py-2 rounded-lg font-bold hover:bg-yellow-400 transition flex items-center gap-2"
+            className="relative bg-aj-yellow text-aj-dark px-3 sm:px-4 py-2 rounded-lg font-bold hover:bg-yellow-400 transition flex items-center gap-1.5 sm:gap-2 whitespace-nowrap flex-shrink-0"
           >
             <ShoppingCart className="w-4 h-4" />
-            Cart ({itemCount})
+            <span className="hidden sm:inline">Cart </span>({itemCount})
             {itemCount > 0 && (
               <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                 {itemCount}

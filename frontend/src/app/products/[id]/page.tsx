@@ -111,8 +111,8 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
           { href: '/ai-planner', label: 'AI Planner' },
         ]}
         rightSlot={
-          <Link href="/products" className="bg-aj-yellow text-aj-dark px-4 py-2 rounded-lg font-bold text-sm">
-            🛒 Cart ({itemCount})
+          <Link href="/products" className="bg-aj-yellow text-aj-dark px-3 sm:px-4 py-2 rounded-lg font-bold text-sm whitespace-nowrap flex-shrink-0">
+            🛒 <span className="hidden sm:inline">Cart </span>({itemCount})
           </Link>
         }
       />
