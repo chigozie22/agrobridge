@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'apps.deliveries',
     'apps.poultry',
     'apps.planner',
+    'apps.chatbot',
 ]
 
 MIDDLEWARE = [
@@ -142,6 +143,8 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_THROTTLE_RATES': {
         'planner': '15/day',
+        'chatbot_anon': '15/day',
+        'chatbot_user': '40/day',
     },
 }
 
