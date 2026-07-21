@@ -1,11 +1,16 @@
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, BasePermission
 from rest_framework.response import Response
 from django.utils import timezone
 from .models import Delivery
 from .serializers import DeliverySerializer
 from apps.orders.models import Order
+
+
+class IsAdminOrCourier(BasePermission):
+    def has_permission(self, request, view):
+        return bool(request.user and request.user.is_authenticated and request.user.role in ('ADMIN', 'COURIER'))
 
 
 class DeliveryViewSet(viewsets.ModelViewSet):
@@ -38,9 +43,8 @@ class DeliveryViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         # Only admins and couriers can create/update/delete deliveries
-        if self.action in ('create', 'update', 'partial_update', 'destroy', 'complete'):
-            from rest_framework.permissions import IsAdminUser
-            # Allow couriers too via custom check in the action
+        if self.action in ('create', 'update', 'partial_update', 'destroy'):
+            return [IsAuthenticated(), IsAdminOrCourier()]
         return [IsAuthenticated()]
 
     @action(detail=False, methods=['get'], url_path='upcoming')
