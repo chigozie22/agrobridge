@@ -21,10 +21,10 @@ class DeliveryViewSet(viewsets.ModelViewSet):
         user = self.request.user
         qs = Delivery.objects.select_related('cluster', 'courier')
 
-        # Couriers see their own deliveries; buyers see their cluster's deliveries; admins see all
+        # Couriers see their own deliveries; buyers/vendors see their cluster's deliveries; admins see all
         if user.role == 'COURIER':
             qs = qs.filter(courier=user)
-        elif user.role not in ('ADMIN', 'VENDOR'):
+        elif user.role != 'ADMIN':
             if user.cluster_id:
                 qs = qs.filter(cluster=user.cluster_id)
             else:

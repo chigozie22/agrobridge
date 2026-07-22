@@ -6,6 +6,7 @@ from google.oauth2 import id_token as google_id_token
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.throttling import AnonRateThrottle
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.conf import settings
@@ -19,12 +20,18 @@ from .serializers import (
 )
 
 
+class AuthRateThrottle(AnonRateThrottle):
+    """Shared by login/register/Google auth — these are always hit pre-authentication, so throttle by IP."""
+    scope = 'auth'
+
+
 class UserRegistrationView(generics.CreateAPIView):
     """API endpoint for user registration"""
     queryset = User.objects.all()
     serializer_class = UserRegistrationSerializer
     permission_classes = [AllowAny]
-    
+    throttle_classes = [AuthRateThrottle]
+
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -46,6 +53,7 @@ class UserRegistrationView(generics.CreateAPIView):
 class UserLoginView(APIView):
     """API endpoint for user login"""
     permission_classes = [AllowAny]
+    throttle_classes = [AuthRateThrottle]
     serializer_class = UserLoginSerializer
     
     def post(self, request):
@@ -83,6 +91,7 @@ class UserLoginView(APIView):
 class GoogleAuthView(APIView):
     """Sign in (or sign up) with a Google ID token — returns the same shape as email/password login."""
     permission_classes = [AllowAny]
+    throttle_classes = [AuthRateThrottle]
 
     def post(self, request):
         token = request.data.get('id_token')
