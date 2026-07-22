@@ -27,6 +27,7 @@ services:
       # - key: PAYSTACK_SECRET_KEY
       # - key: PAYSTACK_PUBLIC_KEY
       # - key: CLAUDE_API_KEY
+      # - key: GOOGLE_CLIENT_ID  (same value as NEXT_PUBLIC_GOOGLE_CLIENT_ID on Vercel — from Google Cloud Console, OAuth 2.0 Client ID, Web application type)
 
 databases:
   - name: agrobridge-db

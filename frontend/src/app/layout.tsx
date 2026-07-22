@@ -3,6 +3,9 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { CartProvider } from '@/context/CartContext'
 import ChatWidget from '@/components/ChatWidget'
+import { GoogleOAuthProvider } from '@react-oauth/google'
+
+const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ''
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,10 +19,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={inter.className}>
-        <CartProvider>
-          {children}
-          <ChatWidget />
-        </CartProvider>
+        <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+          <CartProvider>
+            {children}
+            <ChatWidget />
+          </CartProvider>
+        </GoogleOAuthProvider>
       </body>
     </html>
   )

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Eye, EyeOff, ArrowRight, UserPlus } from 'lucide-react'
+import { GoogleLogin, CredentialResponse } from '@react-oauth/google'
 
 export default function SignupPage() {
   const [formData, setFormData] = useState({
@@ -127,6 +128,31 @@ export default function SignupPage() {
         }
       }
     } catch (err) {
+      setError('Network error. Please check your connection.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleGoogleSuccess = async (credentialResponse: CredentialResponse) => {
+    setError('')
+    setLoading(true)
+    try {
+      const response = await fetch(`${API_URL}/api/auth/google/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id_token: credentialResponse.credential }),
+      })
+      const data = await response.json()
+      if (response.ok) {
+        localStorage.setItem('accessToken', data.tokens.access)
+        localStorage.setItem('refreshToken', data.tokens.refresh)
+        localStorage.setItem('user', JSON.stringify(data.user))
+        window.location.href = '/dashboard'
+      } else {
+        setError(data.error || 'Google sign-in failed.')
+      }
+    } catch {
       setError('Network error. Please check your connection.')
     } finally {
       setLoading(false)
@@ -309,6 +335,22 @@ export default function SignupPage() {
               {!loading && <ArrowRight className="w-5 h-5" />}
             </button>
           </form>
+
+          {/* Divider */}
+          <div className="flex items-center gap-3 my-6">
+            <div className="flex-1 h-px bg-gray-200" />
+            <span className="text-xs text-gray-400 font-semibold">OR</span>
+            <div className="flex-1 h-px bg-gray-200" />
+          </div>
+
+          {/* Google Sign-In */}
+          <div className="flex justify-center">
+            <GoogleLogin
+              onSuccess={handleGoogleSuccess}
+              onError={() => setError('Google sign-in failed. Please try again.')}
+              text="signup_with"
+            />
+          </div>
 
           {/* Login Link */}
           <p className="text-center text-gray-600 mt-6">

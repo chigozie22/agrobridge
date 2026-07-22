@@ -1,11 +1,14 @@
 """
 Views for User authentication and management
 """
+from google.auth.transport import requests as google_requests
+from google.oauth2 import id_token as google_id_token
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.conf import settings
 from django.contrib.auth import authenticate
 from .models import User
 from .serializers import (
@@ -75,6 +78,53 @@ class UserLoginView(APIView):
             },
             'message': 'Login successful'
         }, status=status.HTTP_200_OK)
+
+
+class GoogleAuthView(APIView):
+    """Sign in (or sign up) with a Google ID token — returns the same shape as email/password login."""
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        token = request.data.get('id_token')
+        if not token:
+            return Response({'error': 'id_token is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            idinfo = google_id_token.verify_oauth2_token(
+                token, google_requests.Request(), settings.GOOGLE_CLIENT_ID
+            )
+        except ValueError:
+            return Response({'error': 'Invalid Google token'}, status=status.HTTP_400_BAD_REQUEST)
+
+        if not idinfo.get('email_verified'):
+            return Response({'error': 'Google email is not verified'}, status=status.HTTP_400_BAD_REQUEST)
+
+        email = idinfo['email']
+
+        try:
+            user = User.objects.get(email=email)
+            created = False
+        except User.DoesNotExist:
+            user = User.objects.create_user(
+                email=email,
+                name=idinfo.get('name') or email.split('@')[0],
+                password=None,
+            )
+            created = True
+
+        if not user.is_active:
+            return Response({'error': 'User account is disabled'}, status=status.HTTP_403_FORBIDDEN)
+
+        refresh = RefreshToken.for_user(user)
+
+        return Response({
+            'user': UserSerializer(user).data,
+            'tokens': {
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+            },
+            'message': 'Account created with Google' if created else 'Signed in with Google'
+        }, status=status.HTTP_201_CREATED if created else status.HTTP_200_OK)
 
 
 class UserProfileView(generics.RetrieveUpdateAPIView):

@@ -211,6 +211,9 @@ FRONTEND_URL = config('FRONTEND_URL', default='http://localhost:3000')
 # AI Food Planner (Claude API)
 CLAUDE_API_KEY = config('CLAUDE_API_KEY', default='')
 
+# Google Sign-In (OAuth 2.0 Client ID — same value goes in the frontend as NEXT_PUBLIC_GOOGLE_CLIENT_ID)
+GOOGLE_CLIENT_ID = config('GOOGLE_CLIENT_ID', default='')
+
 # Email (Gmail SMTP)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
