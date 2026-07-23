@@ -451,9 +451,9 @@ export default function Home() {
               <h4 className="font-bold mb-4">Quick Links</h4>
               <ul className="space-y-2 text-gray-400">
                 <li><a href="#home" className="hover:text-aj-yellow transition">Home</a></li>
-                <li><a href="#clusters" className="hover:text-aj-yellow transition">Clusters</a></li>
-                <li><a href="#products" className="hover:text-aj-yellow transition">Products</a></li>
-                <li><a href="#about" className="hover:text-aj-yellow transition">About Us</a></li>
+                <li><Link href="/clusters" className="hover:text-aj-yellow transition">Clusters</Link></li>
+                <li><Link href="/products" className="hover:text-aj-yellow transition">Products</Link></li>
+                <li><Link href="/about" className="hover:text-aj-yellow transition">About Us</Link></li>
               </ul>
             </div>
             <div>
