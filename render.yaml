@@ -9,10 +9,6 @@ services:
     envVars:
       - key: PYTHON_VERSION
         value: 3.12.0
-      - key: DATABASE_URL
-        fromDatabase:
-          name: agrobridge-db
-          property: connectionString
       - key: DJANGO_SECRET_KEY
         generateValue: true
       - key: DEBUG
@@ -24,12 +20,12 @@ services:
       - key: FRONTEND_URL
         value: https://agrobridge-v2.vercel.app
       # Add these manually in the Render dashboard (do not commit real keys):
+      # - key: DATABASE_URL  (Supabase Session Pooler connection string — NOT a Render-managed
+      #     database. Deliberately not declared here via `fromDatabase` + a `databases:` block —
+      #     that combination is what let a Blueprint sync silently revert this back to Render's own
+      #     default Postgres, which is exactly what broke production login on 2026-07-23. Set this
+      #     by hand in the dashboard and keep it out of this file.)
       # - key: PAYSTACK_SECRET_KEY
       # - key: PAYSTACK_PUBLIC_KEY
       # - key: CLAUDE_API_KEY
       # - key: GOOGLE_CLIENT_ID  (same value as NEXT_PUBLIC_GOOGLE_CLIENT_ID on Vercel — from Google Cloud Console, OAuth 2.0 Client ID, Web application type)
-
-databases:
-  - name: agrobridge-db
-    databaseName: agrobridge
-    plan: free
