@@ -3,6 +3,7 @@ Product models for AgroBridge
 """
 from decimal import Decimal
 from django.db import models
+from config.validators import validate_image_size
 
 
 class Category(models.Model):
@@ -57,7 +58,7 @@ class Product(models.Model):
     
     # Product specifications
     unit = models.CharField(max_length=20, choices=UNIT_CHOICES, default='KG')
-    image = models.ImageField(upload_to='products/', null=True, blank=True)
+    image = models.ImageField(upload_to='products/', null=True, blank=True, validators=[validate_image_size])
     
     # Quality and preservation
     requires_refrigeration = models.BooleanField(default=False)
@@ -125,7 +126,7 @@ class Combo(models.Model):
     
     # Marketing
     badge = models.CharField(max_length=20, choices=BADGE_CHOICES, blank=True, null=True)
-    image = models.ImageField(upload_to='combos/', blank=True, null=True)
+    image = models.ImageField(upload_to='combos/', blank=True, null=True, validators=[validate_image_size])
     
     # Visibility
     is_active = models.BooleanField(default=True)

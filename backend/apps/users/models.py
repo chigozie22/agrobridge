@@ -4,6 +4,7 @@ User models for AgroBridge
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.utils import timezone
+from config.validators import validate_image_size
 
 
 class UserManager(BaseUserManager):
@@ -66,7 +67,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     
     # Profile fields
     address = models.TextField(blank=True)
-    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
+    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True, validators=[validate_image_size])
     
     objects = UserManager()
     

@@ -142,6 +142,11 @@ REST_FRAMEWORK = {
         'rest_framework.filters.OrderingFilter',
     ],
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_RENDERER_CLASSES': (
+        ['rest_framework.renderers.JSONRenderer', 'rest_framework.renderers.BrowsableAPIRenderer']
+        if DEBUG else
+        ['rest_framework.renderers.JSONRenderer']
+    ),
     'DEFAULT_THROTTLE_RATES': {
         'planner': '15/day',
         'chatbot_anon': '15/day',
@@ -250,4 +255,18 @@ LOGGING = {
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Production security hardening. Render terminates TLS at its edge and always serves
+# over HTTPS, so we deliberately don't set SECURE_SSL_REDIRECT here — Django forcing
+# its own redirect on top of that risks breaking Render's internal health checks if
+# they ever reach the container without the proxy header set. SECURE_PROXY_SSL_HEADER
+# still matters on its own: it's what makes request.is_secure() (and therefore the
+# cookie-secure flags below) resolve correctly behind Render's reverse proxy.
+if not DEBUG:
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
