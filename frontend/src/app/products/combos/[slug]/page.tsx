@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, use } from 'react'
 import Link from 'next/link'
 import { ArrowLeft, ShoppingCart, Clock, Users, UtensilsCrossed, Package } from 'lucide-react'
 import { useCart } from '@/context/CartContext'
@@ -55,7 +55,8 @@ const useCaseEmoji: Record<string, string> = {
   events: '🎉',
 }
 
-export default function ComboDetailPage({ params }: { params: { slug: string } }) {
+export default function ComboDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = use(params)
   const [combo, setCombo] = useState<ComboDetail | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -76,12 +77,12 @@ export default function ComboDetailPage({ params }: { params: { slug: string } }
 
   useEffect(() => {
     fetchCombo()
-  }, [params.slug])
+  }, [slug])
 
   const fetchCombo = async () => {
     try {
       setLoading(true)
-      const res = await fetch(`${API_URL}/api/products/combos/${params.slug}/`)
+      const res = await fetch(`${API_URL}/api/products/combos/${slug}/`)
       if (!res.ok) {
         setError('Combo not found')
         return

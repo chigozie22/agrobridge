@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, use } from 'react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { ArrowLeft, Package, MapPin, Phone, Truck, CheckCircle, Clock, XCircle, AlertCircle, RefreshCw } from 'lucide-react'
@@ -21,7 +21,8 @@ const STATUS_CONFIG: Record<string, { label: string; desc: string; icon: any; co
   CANCELLED:   { label: 'Cancelled',          desc: 'This order was cancelled',       icon: XCircle,      color: 'text-red-500' },
 }
 
-export default function OrderDetailPage({ params }: { params: { id: string } }) {
+export default function OrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params)
   const router = useRouter()
   const searchParams = useSearchParams()
   const [order, setOrder] = useState<any>(null)
@@ -34,11 +35,11 @@ export default function OrderDetailPage({ params }: { params: { id: string } }) 
     const token = localStorage.getItem('accessToken')
     if (!token) { router.push('/login'); return }
     fetchOrder(token)
-  }, [params.id])
+  }, [id])
 
   const fetchOrder = async (token: string) => {
     try {
-      const res = await fetch(`${API_URL}/api/orders/${params.id}/`, {
+      const res = await fetch(`${API_URL}/api/orders/${id}/`, {
         headers: { Authorization: `Bearer ${token}` }
       })
       if (!res.ok) { router.push('/orders'); return }
@@ -57,7 +58,7 @@ export default function OrderDetailPage({ params }: { params: { id: string } }) 
     if (!t) return
     setVerifying(true)
     try {
-      const res = await fetch(`${API_URL}/api/orders/${params.id}/verify_payment/`, {
+      const res = await fetch(`${API_URL}/api/orders/${id}/verify_payment/`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${t}` }
       })
@@ -81,7 +82,7 @@ export default function OrderDetailPage({ params }: { params: { id: string } }) 
     if (!token) return
     setCancelLoading(true)
     try {
-      const res = await fetch(`${API_URL}/api/orders/${params.id}/cancel/`, {
+      const res = await fetch(`${API_URL}/api/orders/${id}/cancel/`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` }
       })

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, use } from 'react'
 import Link from 'next/link'
 import { ArrowLeft, ShoppingCart, Package, Thermometer, Clock, Tag, Store, MapPin } from 'lucide-react'
 import { useCart } from '@/context/CartContext'
@@ -34,17 +34,18 @@ const PRODUCT_IMAGES: Record<string, string> = {
   'Turkey':                    '/images/products/turkey.jpg',
 }
 
-export default function ProductDetailPage({ params }: { params: { id: string } }) {
+export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params)
   const [product, setProduct] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [added, setAdded] = useState(false)
   const { addItem, itemCount } = useCart()
 
-  useEffect(() => { fetchProduct() }, [params.id])
+  useEffect(() => { fetchProduct() }, [id])
 
   const fetchProduct = async () => {
     try {
-      let url = `${API_URL}/api/products/${params.id}/`
+      let url = `${API_URL}/api/products/${id}/`
       const clusterId = getStoredClusterId()
       if (clusterId) url += `?cluster=${clusterId}`
       const res = await fetch(url)
